@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.mainController">
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TabPane prefHeight="362.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="oeuvres">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <children>
+                          <VBox fx:id="vBox" layoutX="27.0" layoutY="25.0" prefHeight="200.0" prefWidth="202.0">
+                              <children>
+                                    <Button mnemonicParsing="false" onAction="#goToOeuvres" text="Nouvelle oeuvre" />
+
+                              </children>
+                          </VBox>
+                      </children>
+                      </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="usagers">
+                  <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                          <children>
+                              <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
+                                  <children>
+                                      <Button mnemonicParsing="false" onAction="#goToUsagers" text="Nouvel usager" />
+                                  </children>
+                              </VBox>
+                          </children>
+                      </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children></Pane>
+   </center>
+
+
+</BorderPane>

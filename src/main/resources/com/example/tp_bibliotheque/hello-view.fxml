@@ -8,18 +8,41 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-
-    <Label fx:id="welcomeText" />
-   <TextField fx:id="nomTF" promptText="nom" />
-   <TextField fx:id="prenomTF" promptText="prenom" />
-   <TextField fx:id="emailTF" promptText="email" />
-    <Button onAction="#ajouterUsager" text="Ajouter usager" />
-   <VBox fx:id="vBox" prefHeight="200.0" prefWidth="100.0">
-      <children>
-         <TextField fx:id="titreTF" promptText="titre" />
-         <TextField fx:id="premiere_parutionTF" promptText="première parution" />
-         <TextField fx:id="mot_cle1TF" promptText="mot clé 1" />
-         <Button mnemonicParsing="false" onAction="#ajouterOeuvre" text="Ajouter oeuvre" />
-      </children>
-   </VBox>
+   <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+     <tabs>
+       <Tab text="Untitled Tab 1">
+         <content>
+           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="347.0">
+                  <children>
+                     <VBox fx:id="vBox" prefHeight="200.0" prefWidth="100.0">
+                        <children>
+                           <TextField fx:id="titreTF" promptText="titre" />
+                           <TextField fx:id="premiere_parutionTF" promptText="première parution" />
+                           <TextField fx:id="mot_cle1TF" promptText="mot clé 1" />
+                           <Button mnemonicParsing="false" onAction="#ajouterOeuvre" text="Ajouter oeuvre" />
+                        </children>
+                     </VBox>
+                  </children>
+               </AnchorPane>
+         </content>
+            <graphic>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                  
+                      <Label fx:id="welcomeText" />
+                     <TextField fx:id="nomTF" promptText="nom" />
+                     <TextField fx:id="prenomTF" promptText="prenom" />
+                     <TextField fx:id="emailTF" promptText="email" />
+                      <Button onAction="#ajouterUsager" text="Ajouter usager" />
+                  </children>
+               </VBox>
+            </graphic>
+       </Tab>
+       <Tab text="Untitled Tab 2">
+         <content>
+           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+         </content>
+       </Tab>
+     </tabs>
+   </TabPane>
 </VBox>
