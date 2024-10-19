@@ -4,14 +4,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="com.example.tp_bibliotheque.HelloController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.HelloController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
     <Label fx:id="welcomeText" />
-   <TextField promptText="nom" fx:id="nomTF"/>
-   <TextField promptText="prenom" fx:id="prenomTF"/>
-   <TextField promptText="email" fx:id="emailTF"/>
+   <TextField fx:id="nomTF" promptText="nom" />
+   <TextField fx:id="prenomTF" promptText="prenom" />
+   <TextField fx:id="emailTF" promptText="email" />
     <Button onAction="#ajouterUsager" text="Ajouter usager" />
+   <VBox fx:id="vBox" prefHeight="200.0" prefWidth="100.0">
+      <children>
+         <TextField fx:id="titreTF" promptText="titre" />
+         <TextField fx:id="premiere_parutionTF" promptText="première parution" />
+         <TextField fx:id="mot_cle1TF" promptText="mot clé 1" />
+         <Button mnemonicParsing="false" onAction="#ajouterOeuvre" text="Ajouter oeuvre" />
+      </children>
+   </VBox>
 </VBox>
