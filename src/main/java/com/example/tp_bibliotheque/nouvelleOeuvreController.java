@@ -17,6 +17,14 @@ public class nouvelleOeuvreController {
     @FXML
     TextField mot_cle1TF;
     @FXML
+    TextField mot_cle2TF;
+    @FXML
+    TextField mot_cle3TF;
+    @FXML
+    TextField mot_cle4TF;
+    @FXML
+    TextField mot_cle5TF;
+    @FXML
     private VBox vBox;
     private CheckComboBox<String> checkComboBox;
 
@@ -26,17 +34,17 @@ public class nouvelleOeuvreController {
         try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
              Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery(auteurs_query)) {
-            while (resultSet.next()) {
-                String nom = resultSet.getString("nom");
-                String prenom = resultSet.getString("prenom");
-                String date_naissance = resultSet.getString("date_naissance");
-                auteurs.add(prenom + " " + nom + " " + date_naissance);
-            }
+             while (resultSet.next()) {
+                 String nom = resultSet.getString("nom");
+                 String prenom = resultSet.getString("prenom");
+                 String date_naissance = resultSet.getString("date_naissance");
+                 auteurs.add(prenom + " " + nom + " " + date_naissance);
+             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         checkComboBox = new CheckComboBox(auteurs);
-        vBox.getChildren().add(3, checkComboBox);
+        vBox.getChildren().add(8, checkComboBox);
     }
     @FXML
     protected void ajouterOeuvre() {
@@ -44,6 +52,11 @@ public class nouvelleOeuvreController {
             Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
 
             Oeuvre nouvelleOeuvre = new Oeuvre(titreTF.getText(), Integer.parseInt(premiere_parutionTF.getText()), mot_cle1TF.getText());
+            nouvelleOeuvre.mot_cle2=mot_cle2TF.getText();
+            nouvelleOeuvre.mot_cle3=mot_cle3TF.getText();
+            nouvelleOeuvre.mot_cle4=mot_cle4TF.getText();
+            nouvelleOeuvre.mot_cle5=mot_cle5TF.getText();
+
             ResultSet generatedKeys = nouvelleOeuvre.ajouter(con);
             while (generatedKeys.next()) {
                 nouvelleOeuvre.id = generatedKeys.getInt(1);
