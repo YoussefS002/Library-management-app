@@ -43,47 +43,27 @@ public class nouvelleOeuvreController {
         try{
             Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
 
-            String oeuvreSql = "INSERT INTO oeuvres (titre, premiere_parution, mot_cle1) VALUES (?, ?, ?)";
-            String titre = titreTF.getText();
-            int premiere_parution = Integer.parseInt(premiere_parutionTF.getText());
-            String mot_cle1 = mot_cle1TF.getText();
-            PreparedStatement prep_stmt_oeuvre = con.prepareStatement(oeuvreSql, Statement.RETURN_GENERATED_KEYS);
-            prep_stmt_oeuvre.setString(1, titre);
-            prep_stmt_oeuvre.setInt(2, premiere_parution);
-            prep_stmt_oeuvre.setString(3, mot_cle1);
-            prep_stmt_oeuvre.executeUpdate();
-            ResultSet generatedKeys = prep_stmt_oeuvre.getGeneratedKeys();
-            int id_oeuvre=0;
+            Oeuvre nouvelleOeuvre = new Oeuvre(titreTF.getText(), Integer.parseInt(premiere_parutionTF.getText()), mot_cle1TF.getText());
+            ResultSet generatedKeys = nouvelleOeuvre.ajouter(con);
             while (generatedKeys.next()) {
-                id_oeuvre = generatedKeys.getInt(1);
+                nouvelleOeuvre.id = generatedKeys.getInt(1);
             }
 
-            String idRecupSql = "SELECT id_auteur FROM auteurs WHERE nom = ? AND prenom = ? AND date_naissance = ?";
             ObservableList<String> selectedAuthors = checkComboBox.getCheckModel().getCheckedItems();
             for (int i = 0; i < selectedAuthors.size(); i++) {
                 String nomPrenomDateAuteur = selectedAuthors.get(i);
                 String[] L = nomPrenomDateAuteur.split(" ");
-                String prenomAuteur = L[0];
-                String nomAuteur = L[1];
-                String dateAuteur = L[2];
-                PreparedStatement prep_stmt_idRecup = con.prepareStatement(idRecupSql);
-                prep_stmt_idRecup.setString(1, nomAuteur);
-                prep_stmt_idRecup.setString(2, prenomAuteur);
-                prep_stmt_idRecup.setString(3, dateAuteur);
-                ResultSet ids = prep_stmt_idRecup.executeQuery();
-                int id_auteur =0;
-                while (ids.next()) {
-                    id_auteur = ids.getInt("id_auteur");
-                }
-
+                Auteur auteurSelectionne = new Auteur();
+                auteurSelectionne.prenom = L[0];
+                auteurSelectionne.nom = L[1];
+                auteurSelectionne.dateNaissance = L[2];
+                auteurSelectionne.id = auteurSelectionne.recupererId(con);
                 String oeuvres_auteursSql = "INSERT INTO oeuvres_auteurs(id_oeuvre, id_auteur) VALUES (?, ?) ";
                 PreparedStatement prep_stmt_oeuvres_auteurs = con.prepareStatement(oeuvres_auteursSql);
-                prep_stmt_oeuvres_auteurs.setInt(1, id_oeuvre);
-                prep_stmt_oeuvres_auteurs.setInt(2, id_auteur);
+                prep_stmt_oeuvres_auteurs.setInt(1, nouvelleOeuvre.id);
+                prep_stmt_oeuvres_auteurs.setInt(2, auteurSelectionne.id);
                 prep_stmt_oeuvres_auteurs.executeUpdate();
             }
-
-
 
             con.close();
         } catch (Exception e){

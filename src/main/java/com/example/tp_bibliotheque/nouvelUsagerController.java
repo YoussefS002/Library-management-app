@@ -18,20 +18,9 @@ public class nouvelUsagerController {
     protected void ajouterUsager() {
         try{
             Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
-            String sql = "INSERT INTO usagers (nom, prenom, email) VALUES (?, ?, ?)";
-
-            String nom = nomTF.getText();
-            String prenom = prenomTF.getText();
-            String email = emailTF.getText();
-
-            PreparedStatement prep_stmt = con.prepareStatement(sql);
-            prep_stmt.setString(1, nom);
-            prep_stmt.setString(2, prenom);
-            prep_stmt.setString(3, email);
-            prep_stmt.executeUpdate();
-
+            Usager nouvelUsager = new Usager(nomTF.getText(), prenomTF.getText(), emailTF.getText());
+            nouvelUsager.ajouter(con);
             con.close();
-
         } catch (Exception e){
             System.out.println(e);
         }
