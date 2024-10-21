@@ -2,10 +2,13 @@ package com.example.tp_bibliotheque;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.Notifications;
 
 import java.sql.*;
 
@@ -77,8 +80,27 @@ public class nouvelleOeuvreController {
                 prep_stmt_oeuvres_auteurs.setInt(2, auteurSelectionne.id);
                 prep_stmt_oeuvres_auteurs.executeUpdate();
             }
-
             con.close();
+
+            Notifications.create()
+                    .title("Oeuvre ajoutée")
+                    .text("L'oeuvre "+ nouvelleOeuvre.titre +" a été ajoutée.")
+                    .showInformation();
+
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    Thread.sleep(1000);
+                    return null;
+                }
+
+                @Override
+                protected void succeeded() {
+                    Stage stage = (Stage) vBox.getScene().getWindow();
+                    stage.close();
+                }
+            };
+            new Thread(task).start();
         } catch (Exception e){
             System.out.println(e);
         }

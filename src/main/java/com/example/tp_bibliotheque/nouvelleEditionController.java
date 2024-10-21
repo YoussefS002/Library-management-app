@@ -5,7 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-
+import javafx.stage.Stage;
+import org.controlsfx.control.Notifications;
+import javafx.concurrent.Task;
 import java.sql.*;
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class nouvelleEditionController {
     }
 
     @FXML
-    private void ajouterEdition() throws SQLException {
+    private void ajouterEdition() throws SQLException, InterruptedException {
         Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
 
 
@@ -59,5 +61,25 @@ public class nouvelleEditionController {
         nouvelleEdition.oeuvre = oeuvre;
         nouvelleEdition.ajouter(con);
         con.close();
+        Notifications.create()
+                .title("Edition ajoutée")
+                .text("L'édition "+ nouvelleEdition.isbn+" de "+nouvelleEdition.oeuvre.titre+" a été ajoutée")
+                .showInformation();
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Thread.sleep(1000);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                Stage stage = (Stage) cbOeuvre.getScene().getWindow();
+                stage.close();
+            }
+        };
+        new Thread(task).start();
+
     }
 }

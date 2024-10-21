@@ -15,7 +15,7 @@ public class nouvelEmpruntController {
     @FXML
     private ComboBox<String> cbEdition;
     @FXML
-    private TextField numeroExemplaire;
+    private ComboBox<Integer> numeroExemplaire;
     @FXML
     private Label dateEmprunt;
     @FXML

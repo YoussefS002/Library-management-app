@@ -2,9 +2,13 @@ package com.example.tp_bibliotheque;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import org.controlsfx.control.Notifications;
 
 import java.sql.*;
 
@@ -13,7 +17,7 @@ public class nouveauxExemplairesController {
     @FXML
     private ComboBox<String> cbOeuvre;
     @FXML
-    private ComboBox<String> cbIsbn;
+    private ComboBox<Long> cbIsbn;
     @FXML
     private TextField tfNbExemplaires;
 
@@ -36,7 +40,7 @@ public class nouveauxExemplairesController {
     }
     @FXML
     private void afficherIsbns() throws SQLException {
-        ObservableList<String> isbns = FXCollections.observableArrayList();
+        ObservableList<Long> isbns = FXCollections.observableArrayList();
         String isbn_query = "SELECT isbn FROM editions WHERE id_oeuvre = ?";
         Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
         PreparedStatement prep_statement = con.prepareStatement(isbn_query);
@@ -44,13 +48,10 @@ public class nouveauxExemplairesController {
         String[] L = oeuvreAnnee.split("-");
         Oeuvre oeuvreSelectionnee = new Oeuvre(L[0].strip(), Integer.parseInt(L[1].strip()), "?");
         oeuvreSelectionnee.updateId(con);
-        System.out.println(oeuvreSelectionnee.id);
-        System.out.println(oeuvreSelectionnee.titre);
-        System.out.println(oeuvreSelectionnee.premiere_parution);
         prep_statement.setInt(1, oeuvreSelectionnee.id);
         ResultSet resultSet = prep_statement.executeQuery();
         while (resultSet.next()) {
-            String isbn = String.valueOf(resultSet.getLong("isbn"));
+            Long isbn = resultSet.getLong("isbn");
             isbns.add(isbn);
         }
         cbIsbn.setItems(isbns);
@@ -62,9 +63,26 @@ public class nouveauxExemplairesController {
         Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
 
         Edition editionAModifier = new Edition();
-        editionAModifier.isbn = Long.parseLong(cbIsbn.getSelectionModel().getSelectedItem());
+        editionAModifier.isbn = cbIsbn.getSelectionModel().getSelectedItem();
         int nombreAAjouter = Integer.parseInt(tfNbExemplaires.getText());
         editionAModifier.ajouterExp(con, nombreAAjouter);
         con.close();
+        Notifications.create()
+                .title("Exemplaires ajouté")
+                .text(nombreAAjouter+" exemplaires ont été ajoutés à l'édition d'ISBN : "+ editionAModifier.isbn+". Il y a maintenant "+ editionAModifier.nbExemplaires+ " exmplaires.")
+                .showInformation();
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Thread.sleep(1000);
+                return null;
+            }
+            @Override
+            protected void succeeded() {
+                Stage stage = (Stage) cbOeuvre.getScene().getWindow();
+                stage.close();
+            }
+        };
+        new Thread(task).start();
     }
 }

@@ -5,7 +5,7 @@
 
 <AnchorPane prefHeight="252.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.nouvelUsagerController">
     <children>
-        <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
+        <VBox fx:id="vBox" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
             <children>
                 <TextField fx:id="nomTF" promptText="nom" />
                 <TextField fx:id="prenomTF" promptText="prenom" />
