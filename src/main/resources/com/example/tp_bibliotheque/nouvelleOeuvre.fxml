@@ -13,6 +13,6 @@
       <TextField fx:id="mot_cle4TF" promptText="mot clé 4" />
       <TextField fx:id="mot_cle5TF" promptText="mot clé 5" />
       <Label text="Auteurs :" />
-      <Button mnemonicParsing="false" onAction="#ajouterOeuvre" text="Ajouter oeuvre" />
+      <Button mnemonicParsing="false" onAction="#ajouterOeuvre" text="Ajouter" />
    </children>
 </VBox>

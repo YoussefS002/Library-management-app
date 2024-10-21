@@ -25,6 +25,7 @@
                                     </TableView>
                                     <Button mnemonicParsing="false" onAction="#goToNouvelleOeuvre" text="Nouvelle oeuvre" />
                                   <Button mnemonicParsing="false" onAction="#goToNouvelleEdition" text="Nouvelle édition" />
+                                  <Button mnemonicParsing="false" onAction="#goToNouveauxExemplaires" text="Ajout d'exemplaires" />
 
                               </children>
                           </VBox>

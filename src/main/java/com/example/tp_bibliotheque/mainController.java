@@ -2,6 +2,7 @@ package com.example.tp_bibliotheque;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -95,7 +96,7 @@ public class mainController {
         newWindow("nouvelleEdition.fxml");
     }
     @FXML
-    private void goToAjouterExemplaires() throws IOException {
-        newWindow("ajouterExemplaires.fxml");
+    private void goToNouveauxExemplaires() throws IOException {
+        newWindow("nouveauxExemplaires.fxml");
     }
 }

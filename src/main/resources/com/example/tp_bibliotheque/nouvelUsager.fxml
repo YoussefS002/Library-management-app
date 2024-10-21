@@ -10,7 +10,7 @@
                 <TextField fx:id="nomTF" promptText="nom" />
                 <TextField fx:id="prenomTF" promptText="prenom" />
                 <TextField fx:id="emailTF" promptText="email" />
-                <Button onAction="#ajouterUsager" text="Ajouter usager" />
+                <Button onAction="#ajouterUsager" text="Ajouter" />
             </children>
         </VBox>
     </children>

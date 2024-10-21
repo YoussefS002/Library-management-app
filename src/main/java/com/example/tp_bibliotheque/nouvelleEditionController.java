@@ -37,6 +37,7 @@ public class nouvelleEditionController {
         }
         cbOeuvre.setItems(oeuvres);
     }
+
     @FXML
     private void ajouterEdition() throws SQLException {
         Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
