@@ -75,4 +75,15 @@ public class Oeuvre {
             motsList.add(mot_cle5);
         mots_cles = String.join(", ", motsList);
     }
+    public int recupererId (Connection con) throws SQLException {
+        String idRecupSql = "SELECT id_oeuvre FROM oeuvres WHERE titre = ? AND premiere_aprution = ?";
+        PreparedStatement prep_stmt_idRecup = con.prepareStatement(idRecupSql);
+        prep_stmt_idRecup.setString(1, this.titre);
+        prep_stmt_idRecup.setInt(2, this.premiere_parution);
+        ResultSet ids = prep_stmt_idRecup.executeQuery();
+        while (ids.next()) {
+            this.id = ids.getInt("id_oeuvre");
+        }
+        return this.id;
+    }
 }

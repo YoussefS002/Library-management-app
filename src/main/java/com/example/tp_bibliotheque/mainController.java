@@ -13,9 +13,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class mainController {
     @FXML
@@ -82,11 +79,23 @@ public class mainController {
     }
 
     @FXML
-    private void goToOeuvres() throws IOException {
+    private void goToNouvelleOeuvre() throws IOException {
         newWindow("nouvelleOeuvre.fxml");
     }
     @FXML
-    private void goToUsagers() throws IOException {
+    private void goToNouvelUsager() throws IOException {
         newWindow("nouvelUsager.fxml");
+    }
+    @FXML
+    private void goToNouvelEmprunt() throws IOException {
+        newWindow("nouvelEmprunt.fxml");
+    }
+    @FXML
+    private void goToNouvelleEdition() throws IOException {
+        newWindow("nouvelleEdition.fxml");
+    }
+    @FXML
+    private void goToAjouterExemplaires() throws IOException {
+        newWindow("ajouterExemplaires.fxml");
     }
 }

@@ -23,7 +23,8 @@
                                           <TableColumn fx:id="auteursColumn" minWidth="9.33331298828125" prefWidth="158.33340454101562" text="Auteurs" />
                                       </columns>
                                     </TableView>
-                                    <Button mnemonicParsing="false" onAction="#goToOeuvres" text="Nouvelle oeuvre" />
+                                    <Button mnemonicParsing="false" onAction="#goToNouvelleOeuvre" text="Nouvelle oeuvre" />
+                                  <Button mnemonicParsing="false" onAction="#goToNouvelleEdition" text="Nouvelle édition" />
 
                               </children>
                           </VBox>
@@ -37,13 +38,27 @@
                           <children>
                               <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
                                   <children>
-                                      <Button mnemonicParsing="false" onAction="#goToUsagers" text="Nouvel usager" />
+                                      <Button mnemonicParsing="false" onAction="#goToNouvelUsager" text="Nouvel usager" />
                                   </children>
                               </VBox>
                           </children>
                       </AnchorPane>
                   </content>
                 </Tab>
+                  <Tab text = "Emprunts">
+                      <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                              <children>
+                                  <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
+                                      <children>
+                                          <Button mnemonicParsing="false" onAction="#goToNouvelEmprunt" text="Nouvel emprunt" />
+                                      </children>
+                                  </VBox>
+                              </children>
+                          </AnchorPane>
+                      </content>
+
+                  </Tab>
               </tabs>
             </TabPane>
          </children></Pane>
