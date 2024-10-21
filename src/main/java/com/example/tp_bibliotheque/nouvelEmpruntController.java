@@ -7,13 +7,13 @@ import javafx.scene.control.TextField;
 
 public class nouvelEmpruntController {
     @FXML
-    private ComboBox<String> ccbGestionnaireEmprunt;
+    private ComboBox<String> cbGestionnaireEmprunt;
     @FXML
-    private ComboBox<String> ccbUsager;
+    private ComboBox<String> cbUsager;
     @FXML
-    private ComboBox<String> ccbOeuvre;
+    private ComboBox<String> cbOeuvre;
     @FXML
-    private ComboBox<String> ccbEdition;
+    private ComboBox<String> cbEdition;
     @FXML
     private TextField numeroExemplaire;
     @FXML

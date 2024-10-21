@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 public class HelloApplication extends Application {
     @Override
@@ -18,7 +20,6 @@ public class HelloApplication extends Application {
 
     public static void main(String[ ] args) throws Exception {
         launch();
-
     }
 }
 

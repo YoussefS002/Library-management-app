@@ -7,6 +7,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.sql.*;
+import java.util.List;
 
 public class nouvelleEditionController {
     @FXML
@@ -44,17 +45,16 @@ public class nouvelleEditionController {
 
 
         Edition nouvelleEdition = new Edition();
-        nouvelleEdition.isbn = Integer.parseInt(tfIsbn.getText());
+        nouvelleEdition.isbn = Long.parseLong(tfIsbn.getText());
         nouvelleEdition.nbExemplaires = Integer.parseInt(tfNbExemplaires.getText());
         nouvelleEdition.Editeur = tfEditeur.getText();
         nouvelleEdition.anneeEdition = Integer.parseInt(tfAnneeEdition.getText());
 
-        Oeuvre oeuvre = null;
+
         String oeuvreAnnee = cbOeuvre.getSelectionModel().getSelectedItem();
-        String[] L = oeuvreAnnee.split(" ");
-        oeuvre.titre = L[0];
-        oeuvre.premiere_parution = Integer.parseInt(L[2]);
-        oeuvre.id = oeuvre.recupererId(con);
+        String[] L = oeuvreAnnee.split("-");
+        Oeuvre oeuvre = new Oeuvre(L[0].strip(), Integer.parseInt(L[1].strip()), "?");
+        oeuvre.updateId(con);
 
         nouvelleEdition.oeuvre = oeuvre;
         nouvelleEdition.ajouter(con);
