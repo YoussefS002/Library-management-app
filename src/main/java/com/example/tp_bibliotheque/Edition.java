@@ -18,6 +18,13 @@ public class Edition {
         prep_stmt_edition.setInt(4, this.anneeEdition);
         prep_stmt_edition.setInt(5, this.nbExemplaires);
         prep_stmt_edition.executeUpdate();
+
+        String creationExemplairesSql = "INSERT INTO exemplaires(isbn) VALUES (?)";
+        PreparedStatement prep_stmt_exemplaires = con.prepareStatement(creationExemplairesSql);
+        prep_stmt_exemplaires.setLong(1, this.isbn);
+        for (int i = 0; i < this.nbExemplaires; i++) {
+            prep_stmt_exemplaires.executeUpdate();
+        }
     }
     public void ajouterExp (Connection con, int nombre) throws SQLException {
         String recupNbSql = "SELECT nb_exemplaires FROM editions WHERE isbn = ?";
@@ -35,5 +42,13 @@ public class Edition {
         prep_stmt_edition.setInt(1, this.nbExemplaires);
         prep_stmt_edition.setLong(2, this.isbn);
         prep_stmt_edition.executeUpdate();
+
+        String creationExemplairesSql = "INSERT INTO exemplaires(isbn) VALUES (?)";
+        PreparedStatement prep_stmt_exemplaires = con.prepareStatement(creationExemplairesSql);
+        prep_stmt_exemplaires.setLong(1, this.isbn);
+        for (int i = 0; i < nombre; i++) {
+            prep_stmt_exemplaires.executeUpdate();
+        }
     }
+
 }

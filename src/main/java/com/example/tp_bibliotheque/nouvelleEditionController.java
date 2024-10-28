@@ -60,6 +60,9 @@ public class nouvelleEditionController {
 
         nouvelleEdition.oeuvre = oeuvre;
         nouvelleEdition.ajouter(con);
+
+
+
         con.close();
         Notifications.create()
                 .title("Edition ajoutée")

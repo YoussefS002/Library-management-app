@@ -5,26 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Usager {
-
+public class Gestionnaire {
     String nom;
     String prenom;
     String email;
+    String motdepasse;
     Categorie categorie;
 
-    public Usager(String nom, String prenom, String email) {
-        this.nom = nom;
-        this.prenom = prenom;
+    public Gestionnaire(String email) {
         this.email = email;
     }
-    public void ajouter(Connection con) throws SQLException {
-        String sql = "INSERT INTO usagers (nom, prenom, email) VALUES (?, ?, ?)";
-        PreparedStatement prep_stmt = con.prepareStatement(sql);
-        prep_stmt.setString(1, this.nom);
-        prep_stmt.setString(2, this.prenom);
-        prep_stmt.setString(3, this.email);
-        prep_stmt.executeUpdate();
-    }
+
     public void update (Connection con) throws SQLException {
         String nomRecupSql = "SELECT prenom, nom FROM usagers WHERE email = ?";
         PreparedStatement prep_stmt_nomRecup = con.prepareStatement(nomRecupSql);
@@ -46,5 +37,4 @@ public class Usager {
         }
         this.categorie.update();
     }
-
 }

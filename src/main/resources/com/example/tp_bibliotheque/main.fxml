@@ -3,67 +3,60 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.mainController">
-   <center>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <TabPane prefHeight="362.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="oeuvres">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                      <children>
-                          <VBox fx:id="vBox" layoutX="27.0" layoutY="25.0" prefHeight="193.0" prefWidth="514.0">
-                              <children>
-                                    <TableView fx:id="tableView" prefHeight="169.0" prefWidth="465.0">
-                                      <columns>
-                                        <TableColumn fx:id="titreColumn" prefWidth="107.0000057220459" text="Titre" />
-                                        <TableColumn fx:id="premiereParutionColumn" prefWidth="114.33331298828125" text="Première parution" />
-                                          <TableColumn fx:id="motsClesColumn" minWidth="9.33331298828125" prefWidth="135.66661071777344" text="Mots clés" />
-                                          <TableColumn fx:id="auteursColumn" minWidth="9.33331298828125" prefWidth="158.33340454101562" text="Auteurs" />
-                                      </columns>
-                                    </TableView>
-                                    <Button mnemonicParsing="false" onAction="#goToNouvelleOeuvre" text="Nouvelle oeuvre" />
-                                  <Button mnemonicParsing="false" onAction="#goToNouvelleEdition" text="Nouvelle édition" />
-                                  <Button mnemonicParsing="false" onAction="#goToNouveauxExemplaires" text="Ajout d'exemplaires" />
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.mainController">
+   <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0">
+       <tabs>
+           <Tab text="oeuvres">
+               <content>
+                   <AnchorPane>
+                       <VBox fx:id="vBox" alignment="CENTER" spacing="5" AnchorPane.rightAnchor="3" AnchorPane.leftAnchor="3" AnchorPane.topAnchor="3">
+                           <children>
+                               <TableView fx:id="tableView" prefHeight="400.0">
+                                   <columns>
+                                       <TableColumn fx:id="titreColumn" prefWidth="190" text="Titre" />
+                                       <TableColumn fx:id="premiereParutionColumn" prefWidth="150" text="Première parution" />
+                                       <TableColumn fx:id="motsClesColumn" prefWidth="266" text="Mots clés" />
+                                       <TableColumn fx:id="auteursColumn" prefWidth="170" text="Auteurs" />
+                                   </columns>
+                               </TableView>
+                               <HBox spacing="5" alignment="CENTER">
+                                   <Button mnemonicParsing="false" onAction="#goToNouvelleOeuvre" text="Nouvelle oeuvre" />
+                                   <Button mnemonicParsing="false" onAction="#goToNouvelleEdition" text="Nouvelle édition" />
+                                   <Button mnemonicParsing="false" onAction="#goToNouveauxExemplaires" text="Ajout d'exemplaires" />
+                               </HBox>
+                           </children>
+                       </VBox>
+                   </AnchorPane>
+               </content>
+           </Tab>
+           <Tab text="usagers">
+               <content>
+                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                       <children>
+                           <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
+                               <children>
+                                   <Button mnemonicParsing="false" onAction="#goToNouvelUsager" text="Nouvel usager" />
+                               </children>
+                           </VBox>
+                       </children>
+                   </AnchorPane>
+               </content>
+           </Tab>
+           <Tab text = "Emprunts">
+               <content>
+                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                       <children>
+                           <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
+                               <children>
+                                   <Button mnemonicParsing="false" onAction="#goToNouvelEmprunt" text="Nouvel emprunt" />
+                               </children>
+                           </VBox>
+                       </children>
+                   </AnchorPane>
+               </content>
 
-                              </children>
-                          </VBox>
-                      </children>
-                      </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab text="usagers">
-                  <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                          <children>
-                              <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
-                                  <children>
-                                      <Button mnemonicParsing="false" onAction="#goToNouvelUsager" text="Nouvel usager" />
-                                  </children>
-                              </VBox>
-                          </children>
-                      </AnchorPane>
-                  </content>
-                </Tab>
-                  <Tab text = "Emprunts">
-                      <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                              <children>
-                                  <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
-                                      <children>
-                                          <Button mnemonicParsing="false" onAction="#goToNouvelEmprunt" text="Nouvel emprunt" />
-                                      </children>
-                                  </VBox>
-                              </children>
-                          </AnchorPane>
-                      </content>
+           </Tab>
+       </tabs>
+   </TabPane>
 
-                  </Tab>
-              </tabs>
-            </TabPane>
-         </children></Pane>
-   </center>
-
-
-</BorderPane>
+</AnchorPane>

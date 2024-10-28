@@ -31,6 +31,8 @@ public class mainController {
     @FXML
     private TableColumn<Oeuvre, String> auteursColumn;
 
+
+
     @FXML
     private void initialize() {
         titreColumn.setCellValueFactory(new PropertyValueFactory<>("titre"));

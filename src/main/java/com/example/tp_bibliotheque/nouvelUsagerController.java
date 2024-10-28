@@ -30,7 +30,7 @@ public class nouvelUsagerController {
 
             Notifications.create()
                     .title("Oeuvre ajoutée")
-                    .text("L'usager "+ nouvelUsager.prenom + " " + nouvelUsager.prenom +" a été ajouté.")
+                    .text("L'usagerSelectionne "+ nouvelUsager.prenom + " " + nouvelUsager.prenom +" a été ajouté.")
                     .showInformation();
 
             Task<Void> task = new Task<Void>() {
