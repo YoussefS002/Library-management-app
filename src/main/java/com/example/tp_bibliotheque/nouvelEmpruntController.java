@@ -15,8 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 public class nouvelEmpruntController {
     Usager usagerSelectionne;
-    @FXML
-    private ComboBox<String> cbUsager;
+
     Oeuvre oeuvreSelectionnee;
     @FXML
     private ComboBox<String> cbOeuvre;
@@ -41,7 +40,7 @@ public class nouvelEmpruntController {
         //oeuvres
         ObservableList<String> oeuvres = FXCollections.observableArrayList();
         String oeuvres_query = "SELECT titre,premiere_parution FROM oeuvres";
-        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
              Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery(oeuvres_query)) {
              while (resultSet.next()) {
@@ -54,23 +53,6 @@ public class nouvelEmpruntController {
         }
         cbOeuvre.setItems(oeuvres);
 
-        //usagers
-        ObservableList<String> usagers = FXCollections.observableArrayList();
-        String usagers_query = "SELECT nom,prenom,email FROM usagers";
-        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
-             Statement statement = con.createStatement();
-             ResultSet resultSet = statement.executeQuery(usagers_query)) {
-            while (resultSet.next()) {
-                String nom = resultSet.getString("nom");
-                String prenom = resultSet.getString("prenom");
-                String email = resultSet.getString("email");
-                usagers.add(prenom + " " + nom + " - " + email);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        cbUsager.setItems(usagers);
-
         //dateEmprunt
         dateEmprunt = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -81,7 +63,7 @@ public class nouvelEmpruntController {
     private void afficherIsbns() throws SQLException {
         ObservableList<Long> isbns = FXCollections.observableArrayList();
         String isbn_query = "SELECT isbn FROM editions WHERE id_oeuvre = ?";
-        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
         PreparedStatement prep_statement = con.prepareStatement(isbn_query);
         String oeuvreAnnee = cbOeuvre.getSelectionModel().getSelectedItem();
         String[] L = oeuvreAnnee.split("-");
@@ -100,7 +82,7 @@ public class nouvelEmpruntController {
     private void afficherNumeros() throws SQLException {
         ObservableList<Integer> numeros = FXCollections.observableArrayList();
         String numeros_query = "SELECT numero FROM exemplaires WHERE isbn = ? AND emprunte=false";
-        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
         PreparedStatement prep_statement = con.prepareStatement(numeros_query);
 
         isbnSelectionne = cbIsbn.getSelectionModel().getSelectedItem();
@@ -114,17 +96,8 @@ public class nouvelEmpruntController {
     }
 
     @FXML
-    private void definirDateRetour() throws SQLException {
-        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
-        String prenomNomEmail = cbUsager.getSelectionModel().getSelectedItem();
-        String[] L1 = prenomNomEmail.split("-");
-        String prenomNom = L1[0].strip();
-        String email = L1[1].strip();
-        String[] L2 = prenomNom.split(" ");
-        String prenom = L2[0].strip();
-        String nom = L2[1].strip();
-        usagerSelectionne = new Usager(nom, prenom, email);
-        usagerSelectionne.updateCategorie(con);
+    private void definirDateRetour() {
+        usagerSelectionne=loginController.currentUser;
         int duree_max = usagerSelectionne.categorie.duree_max;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         deadlineRetour=dateEmprunt.plusDays(duree_max);
@@ -133,26 +106,25 @@ public class nouvelEmpruntController {
 
     @FXML
     private void ajouterEmprunt() throws SQLException {
-        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
 
         numeroSelectionne = cbNumero.getSelectionModel().getSelectedItem();
 
         Emprunt nouvelEmprunt = new Emprunt();
         nouvelEmprunt.usager=usagerSelectionne;
         nouvelEmprunt.oeuvre=oeuvreSelectionnee;
-        nouvelEmprunt.isbn=isbnSelectionne;
+        nouvelEmprunt.edition=new Edition(isbnSelectionne);
         nouvelEmprunt.numero=numeroSelectionne;
         nouvelEmprunt.dateEmprunt=dateEmprunt;
         nouvelEmprunt.deadline=deadlineRetour;
 
-        String sql ="INSERT INTO emprunts(email_usager, isbn, numero_exemplaire, date_emprunt, deadline, gestionnaire_emp) VALUES (?, ?,?,?,?,?)";
+        String sql ="INSERT INTO emprunts(id_usager, isbn, numero_exemplaire, date_emprunt, deadline) VALUES (?,?,?,?,?)";
         PreparedStatement prep_statement = con.prepareStatement(sql);
-        prep_statement.setString(1, nouvelEmprunt.usager.email);
-        prep_statement.setLong(2, nouvelEmprunt.isbn);
+        prep_statement.setInt(1, nouvelEmprunt.usager.id);
+        prep_statement.setLong(2, nouvelEmprunt.edition.isbn);
         prep_statement.setInt(3, nouvelEmprunt.numero);
         prep_statement.setDate(4, Date.valueOf(nouvelEmprunt.dateEmprunt));
         prep_statement.setDate(5, Date.valueOf(nouvelEmprunt.deadline));
-        prep_statement.setString(6, loginController.currentGestionnaire.email);
         prep_statement.execute();
         con.close();
         Notifications.create()

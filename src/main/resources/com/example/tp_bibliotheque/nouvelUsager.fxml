@@ -10,6 +10,8 @@
                 <TextField fx:id="nomTF" promptText="nom" />
                 <TextField fx:id="prenomTF" promptText="prenom" />
                 <TextField fx:id="emailTF" promptText="email" />
+                <PasswordField fx:id="passwordTF" promptText="mot de passe"/>
+                <PasswordField fx:id="confirmationTF" promptText="confirmez votre mot de passe"/>
                 <Button onAction="#ajouterUsager" text="Ajouter" />
             </children>
         </VBox>

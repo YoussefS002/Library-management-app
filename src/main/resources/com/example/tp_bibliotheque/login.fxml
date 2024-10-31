@@ -14,5 +14,6 @@
         <TextField fx:id="emailTF" promptText="email"/>
         <PasswordField fx:id="passwordTF" promptText="mot de passe" />
         <Button onAction="#login" text="se connecter"/>
+        <Button onAction="#goToNouvelUsager" text="créer un compte"/>
     </VBox>
 </AnchorPane>

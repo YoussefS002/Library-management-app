@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.tp_bibliotheque.historiqueController"
+            prefHeight="400.0" prefWidth="600.0">
+    <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
+        <children>
+            <TableView fx:id="tableViewE" prefHeight="400.0">
+                <columns>
+                    <TableColumn fx:id="idColumnE" prefWidth="190" text="Identifiant" />
+                    <TableColumn fx:id="oeuvreColumn" prefWidth="146" text="Oeuvre" />
+                    <TableColumn fx:id="editionColumn" prefWidth="170" text="ISBN" />
+                    <TableColumn fx:id="numeroColumn" prefWidth="170" text="Numéro" />
+                    <TableColumn fx:id="dateEmpruntColumn" prefWidth="170" text="Date d'emprunt" />
+                    <TableColumn fx:id="deadlineColumn" prefWidth="170" text="Deadline" />
+                    <TableColumn fx:id="dateRetourColumn" prefWidth="170" text="Date de retour" />
+                </columns>
+            </TableView>
+
+        </children>
+    </VBox>
+</AnchorPane>

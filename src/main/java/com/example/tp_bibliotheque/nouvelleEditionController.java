@@ -27,7 +27,7 @@ public class nouvelleEditionController {
     private void initialize() {
         ObservableList<String> oeuvres = FXCollections.observableArrayList();
         String oeuvres_query = "SELECT titre,premiere_parution FROM oeuvres";
-        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
              Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery(oeuvres_query)) {
             while (resultSet.next()) {
@@ -43,10 +43,10 @@ public class nouvelleEditionController {
 
     @FXML
     private void ajouterEdition() throws SQLException, InterruptedException {
-        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
 
 
-        Edition nouvelleEdition = new Edition();
+        Edition nouvelleEdition = new Edition(0);
         nouvelleEdition.isbn = Long.parseLong(tfIsbn.getText());
         nouvelleEdition.nbExemplaires = Integer.parseInt(tfNbExemplaires.getText());
         nouvelleEdition.Editeur = tfEditeur.getText();

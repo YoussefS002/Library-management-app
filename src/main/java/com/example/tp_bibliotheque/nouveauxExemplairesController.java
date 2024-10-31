@@ -24,7 +24,7 @@ public class nouveauxExemplairesController {
     private void initialize() throws SQLException {
         ObservableList<String> oeuvres = FXCollections.observableArrayList();
         String oeuvres_query = "SELECT titre, premiere_parution FROM oeuvres";
-        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
              Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery(oeuvres_query)) {
             while (resultSet.next()) {
@@ -41,7 +41,7 @@ public class nouveauxExemplairesController {
     private void afficherIsbns() throws SQLException {
         ObservableList<Long> isbns = FXCollections.observableArrayList();
         String isbn_query = "SELECT isbn FROM editions WHERE id_oeuvre = ?";
-        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
         PreparedStatement prep_statement = con.prepareStatement(isbn_query);
         String oeuvreAnnee = cbOeuvre.getSelectionModel().getSelectedItem();
         String[] L = oeuvreAnnee.split("-");
@@ -59,9 +59,9 @@ public class nouveauxExemplairesController {
 
     @FXML
     private void ajouterExemplaires() throws SQLException {
-        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
 
-        Edition editionAModifier = new Edition();
+        Edition editionAModifier = new Edition(0);
         editionAModifier.isbn = cbIsbn.getSelectionModel().getSelectedItem();
         int nombreAAjouter = Integer.parseInt(tfNbExemplaires.getText());
         editionAModifier.ajouterExp(con, nombreAAjouter);

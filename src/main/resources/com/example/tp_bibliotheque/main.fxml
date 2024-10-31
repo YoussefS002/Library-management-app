@@ -4,12 +4,12 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.mainController">
-   <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0">
+   <TabPane tabClosingPolicy="UNAVAILABLE" fx:id="tabPane" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
        <tabs>
            <Tab text="oeuvres">
                <content>
                    <AnchorPane>
-                       <VBox fx:id="vBox" alignment="CENTER" spacing="5" AnchorPane.rightAnchor="3" AnchorPane.leftAnchor="3" AnchorPane.topAnchor="3">
+                       <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
                            <children>
                                <TableView fx:id="tableView" prefHeight="400.0">
                                    <columns>
@@ -19,7 +19,7 @@
                                        <TableColumn fx:id="auteursColumn" prefWidth="170" text="Auteurs" />
                                    </columns>
                                </TableView>
-                               <HBox spacing="5" alignment="CENTER">
+                               <HBox alignment="CENTER" spacing="5">
                                    <Button mnemonicParsing="false" onAction="#goToNouvelleOeuvre" text="Nouvelle oeuvre" />
                                    <Button mnemonicParsing="false" onAction="#goToNouvelleEdition" text="Nouvelle édition" />
                                    <Button mnemonicParsing="false" onAction="#goToNouveauxExemplaires" text="Ajout d'exemplaires" />
@@ -29,32 +29,75 @@
                    </AnchorPane>
                </content>
            </Tab>
-           <Tab text="usagers">
+           <Tab text="usagers" fx:id="usagersTab">
                <content>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                       <children>
-                           <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
-                               <children>
-                                   <Button mnemonicParsing="false" onAction="#goToNouvelUsager" text="Nouvel usager" />
-                               </children>
-                           </VBox>
-                       </children>
+                   <AnchorPane>
+                       <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
+                           <children>
+                               <TableView fx:id="tableViewU" prefHeight="400.0">
+                                   <columns>
+                                       <TableColumn fx:id="idColumn" prefWidth="190" text="Identifiant" />
+                                       <TableColumn fx:id="nomColumn" prefWidth="146" text="Nom" />
+                                       <TableColumn fx:id="prenomColumn" prefWidth="146" text="Prénom" />
+                                       <TableColumn fx:id="emailColumn" prefWidth="170" text="Email" />
+                                       <TableColumn fx:id="categorieColumn" prefWidth="170" text="Catégorie" />
+                                   </columns>
+                               </TableView>
+
+                           </children>
+                       </VBox>
                    </AnchorPane>
                </content>
            </Tab>
-           <Tab text = "Emprunts">
+           <Tab text="Emprunts">
                <content>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                       <children>
-                           <VBox layoutX="30.0" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
-                               <children>
-                                   <Button mnemonicParsing="false" onAction="#goToNouvelEmprunt" text="Nouvel emprunt" />
-                               </children>
-                           </VBox>
-                       </children>
+                   <AnchorPane>
+                       <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
+                           <children>
+                               <TableView fx:id="tableViewE" prefHeight="400.0">
+                                   <columns>
+                                       <TableColumn fx:id="idColumnE" prefWidth="190" text="Identifiant" />
+                                       <TableColumn fx:id="usagerColumn" prefWidth="146" text="Usager" />
+                                       <TableColumn fx:id="oeuvreColumn" prefWidth="146" text="Oeuvre" />
+                                       <TableColumn fx:id="editionColumn" prefWidth="170" text="ISBN" />
+                                       <TableColumn fx:id="numeroColumn" prefWidth="170" text="Numéro" />
+                                       <TableColumn fx:id="dateEmpruntColumn" prefWidth="170" text="Date d'emprunt" />
+                                       <TableColumn fx:id="deadlineColumn" prefWidth="170" text="Deadline" />
+                                       <TableColumn fx:id="dateRetourColumn" prefWidth="170" text="Date de retour" />
+                                   </columns>
+                               </TableView>
+
+                           </children>
+                       </VBox>
                    </AnchorPane>
                </content>
-
+           </Tab>
+           <Tab text="Disponibilités">
+               <content>
+                   <AnchorPane>
+                       <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
+                           <children>
+                               <HBox>
+                                   <TableView fx:id="tableViewD" prefHeight="400.0">
+                                       <columns>
+                                           <TableColumn fx:id="numeroColumnD" prefWidth="50" text="Numéro" />
+                                           <TableColumn fx:id="oeuvreColumnD" prefWidth="50" text="Oeuvre" />
+                                           <TableColumn fx:id="editionColumnD" prefWidth="50" text="ISBN" />
+                                       </columns>
+                                   </TableView>
+                                   <TableView fx:id="tableViewI" prefHeight="400.0">
+                                       <columns>
+                                           <TableColumn fx:id="numeroColumnI" prefWidth="50" text="Numéro" />
+                                           <TableColumn fx:id="oeuvreColumnI" prefWidth="50" text="Oeuvre" />
+                                           <TableColumn fx:id="editionColumnI" prefWidth="50" text="ISBN" />
+                                       </columns>
+                                   </TableView>
+                               </HBox>
+                               <Button onAction="#goToNouvelEmprunt" text="Effectuer un emprunt"/>
+                           </children>
+                       </VBox>
+                   </AnchorPane>
+               </content>
            </Tab>
        </tabs>
    </TabPane>

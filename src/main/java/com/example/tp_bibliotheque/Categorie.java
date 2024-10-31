@@ -6,10 +6,11 @@ public class Categorie {
     String nom;
     int emprunts_max;
     int duree_max;
-
-    public void update() throws SQLException {
+    public Categorie(String nom) {
+        this.nom = nom;
+    }
+    public void updateWithNom(Connection con) throws SQLException {
         String updateSql = "SELECT emprunts_max, duree_max FROM categories WHERE nom = ?";
-        Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
         PreparedStatement ps = con.prepareStatement(updateSql);
         ps.setString(1, this.nom);
         ResultSet rs = ps.executeQuery();
@@ -17,5 +18,9 @@ public class Categorie {
             this.emprunts_max = rs.getInt("emprunts_max");
             this.duree_max = rs.getInt("duree_max");
         }
+    }
+    @Override
+    public String toString() {
+        return nom;
     }
 }

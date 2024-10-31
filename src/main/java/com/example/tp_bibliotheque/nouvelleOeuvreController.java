@@ -34,7 +34,7 @@ public class nouvelleOeuvreController {
     public void initialize() {
         ObservableList<String> auteurs = FXCollections.observableArrayList();
         String auteurs_query = "SELECT prenom, nom, date_naissance FROM auteurs";
-        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
              Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery(auteurs_query)) {
              while (resultSet.next()) {
@@ -52,7 +52,7 @@ public class nouvelleOeuvreController {
     @FXML
     protected void ajouterOeuvre() {
         try{
-            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
 
             Oeuvre nouvelleOeuvre = new Oeuvre(titreTF.getText(), Integer.parseInt(premiere_parutionTF.getText()), mot_cle1TF.getText());
             nouvelleOeuvre.mot_cle2=mot_cle2TF.getText();

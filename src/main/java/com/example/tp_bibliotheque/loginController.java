@@ -18,25 +18,24 @@ public class loginController {
     TextField emailTF;
     @FXML
     PasswordField passwordTF;
-    static Gestionnaire currentGestionnaire;
+    static Usager currentUser;
     @FXML
     private void login() throws SQLException, IOException {
         String email = this.emailTF.getText().toLowerCase();
         String password = this.passwordTF.getText();
-        String query = "SELECT * FROM gestionnaires WHERE email = '" + email + "' AND motdepasse = '" + password + "'";
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblio","root","0000");
+        String query = "SELECT * FROM usagers WHERE email = '" + email + "' AND motdepasse = '" + password + "'";
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
         Statement statement = con.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
         if (resultSet.next()) {
-            currentGestionnaire = new Gestionnaire(email);
-            currentGestionnaire.motdepasse=password;
-            currentGestionnaire.update(con);
-            currentGestionnaire.categorie=new Categorie();
-            currentGestionnaire.updateCategorie(con);
+            currentUser = new Usager(email);
+            currentUser.motdepasse=password;
+            currentUser.categorie=new Categorie("emprunteur");
+            currentUser.updateWithEmail(con);
 
             Notifications.create()
                     .title("Connexion réussie")
-                    .text("Bienvnue "+currentGestionnaire.prenom+" "+currentGestionnaire.nom+" !")
+                    .text("Bienvnue "+ currentUser.prenom+" "+ currentUser.nom+" !")
                     .showInformation();
 
             Task<Void> task = new Task<Void>() {
@@ -70,5 +69,10 @@ public class loginController {
         stage.setTitle("Nouvelle oeuvre");
         stage.setScene(new Scene(root1, 800, 600));
         stage.show();
+    }
+
+    @FXML
+    private void goToNouvelUsager() throws IOException {
+        newWindow("nouvelUsager.fxml");
     }
 }

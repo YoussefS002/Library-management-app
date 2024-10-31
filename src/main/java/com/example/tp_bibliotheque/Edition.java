@@ -8,6 +8,23 @@ public class Edition {
     int anneeEdition;
     Oeuvre oeuvre;
     int nbExemplaires;
+    public Edition(long isbn) {
+        this.isbn = isbn;
+    }
+    public void updateWithIsbn (Connection con) throws SQLException {
+        String recupererOeuvre ="Select id_oeuvre, editeur, nb_exemplaires, annee_edition from editions where isbn = ?";
+        PreparedStatement ps = con.prepareStatement(recupererOeuvre);
+        ps.setLong(1, isbn);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Editeur = rs.getString("editeur");
+            anneeEdition = rs.getInt("annee_edition");
+            oeuvre = new Oeuvre("?", 0, "?");
+            oeuvre.id = rs.getInt("id_oeuvre");
+            oeuvre.updateWithId(con);
+            nbExemplaires = rs.getInt("nb_exemplaires");
+        }
+    }
 
     public void ajouter (Connection con) throws SQLException {
         String editionSql = "INSERT INTO editions (isbn, id_oeuvre, editeur, annee_edition, nb_exemplaires) VALUES (?, ?, ?, ?, ?)";
@@ -50,5 +67,8 @@ public class Edition {
             prep_stmt_exemplaires.executeUpdate();
         }
     }
-
+    @Override
+    public String toString() {
+        return Long.toString(isbn);
+    }
 }
