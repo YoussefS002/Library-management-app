@@ -43,7 +43,13 @@
                                        <TableColumn fx:id="categorieColumn" prefWidth="170" text="Catégorie" />
                                    </columns>
                                </TableView>
-
+                               <HBox>
+                                   <Button fx:id="adminBtn" onAction="#rendreAdmin" text="Rendre admin"/>
+                                   <Button fx:id="gestionnaireBtn" onAction="#rendreGestionnaire" text="Rendre gestionnaire"/>
+                                   <Button fx:id="emprunteurBtn" onAction="#rendreEmprunteur" text="Rendre emprunteur"/>
+                                   <Button fx:id="listeRougeBtn" onAction="#placerEnListeRouge" text="Placer en liste rouge"/>
+                               </HBox>
+                               <Button fx:id="gererCategoriesBtn" onAction="#gererCategories" text="Gérer les catégories"/>
                            </children>
                        </VBox>
                    </AnchorPane>

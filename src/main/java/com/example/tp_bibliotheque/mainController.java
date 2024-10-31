@@ -22,6 +22,16 @@ import java.util.Objects;
 
 public class mainController {
     @FXML
+    private Button gererCategoriesBtn;
+    @FXML
+    private Button adminBtn;
+    @FXML
+    private Button gestionnaireBtn;
+    @FXML
+    private Button emprunteurBtn;
+    @FXML
+    private Button listeRougeBtn;
+    @FXML
     private Button retourButton;
     @FXML
     private TableView<Exemplaire> tableViewD;
@@ -155,10 +165,44 @@ public class mainController {
     }
 
     @FXML
-    private void changerCatégorie() throws IOException {
-        newWindow("nouvelUsager.fxml");
+    private void gererCategories () throws IOException {
+        newView("categories.fxml");
+    }
+    private void changerCategorie(String categorieNom) throws SQLException {
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque", "root", "0000");
+        Usager usager = new Usager("?");
+        usager.id=idUsagerSelectionne;
+        usager.updateWithId(con);
+
+        Categorie categorie = new Categorie(categorieNom);
+        categorie.updateWithNom(con);
+        usager.categorie=categorie;
+
+        String changerCategorieQuery = "UPDATE usagers SET categorie = ? WHERE id_usager = ?";
+        PreparedStatement preparedStatement = con.prepareStatement(changerCategorieQuery);
+        preparedStatement.setString(1, categorie.nom);
+        preparedStatement.setInt(2, usager.id);
+        preparedStatement.execute();
+        initData();
     }
 
+
+    @FXML
+    private void rendreAdmin() throws SQLException {
+        changerCategorie("admin");
+    }
+    @FXML
+    private void rendreGestionnaire() throws SQLException {
+        changerCategorie( "gestionnaire");
+    }
+    @FXML
+    private void rendreEmprunteur() throws SQLException {
+        changerCategorie( "emprunteur");
+    }
+    @FXML
+    private void placerEnListeRouge() throws SQLException {
+        changerCategorie( "liste rouge");
+    }
 
     public void initData() {
         //oeuvres
@@ -362,14 +406,34 @@ public class mainController {
             throw new RuntimeException(e);
         }
         tableViewI.setItems(exemplairesI);
-        retourButton.setVisible(false);
+
 
         //click emprunt
+        retourButton.setVisible(false);
         if (Objects.equals(loginController.currentUser.categorie.nom, "emprunteur")) {
             tableViewE.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
                     idEmpruntSelectionne = newValue.getId();
                     retourButton.setVisible(true);
+                }
+            });
+        }
+
+        //click usager
+        adminBtn.setVisible(false);
+        gestionnaireBtn.setVisible(false);
+        emprunteurBtn.setVisible(false);
+        listeRougeBtn.setVisible(false);
+        gererCategoriesBtn.setVisible(false);
+        if (Objects.equals(loginController.currentUser.categorie.nom, "admin")) {
+            gererCategoriesBtn.setVisible(true);
+            tableViewU.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    idUsagerSelectionne = newValue.getId();
+                    adminBtn.setVisible(true);
+                    gestionnaireBtn.setVisible(true);
+                    emprunteurBtn.setVisible(true);
+                    listeRougeBtn.setVisible(true);
                 }
             });
         }
