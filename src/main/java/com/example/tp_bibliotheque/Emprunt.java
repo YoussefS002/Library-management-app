@@ -4,6 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -18,7 +22,7 @@ public class Emprunt {
     LocalDate dateRetour;
 
     public int getId() {
-            return id;
+        return id;
     }
 
     public Usager getUsager() {
@@ -43,5 +47,29 @@ public class Emprunt {
     public LocalDate getDateRetour() {
         return dateRetour;
     }
+    public void updateWithId (Connection con) throws SQLException {
+        String sql = "select id_usager, isbn, numero_exemplaire, date_emprunt, deadline, date_retour from emprunts WHERE id_emprunt = " + this.id;
+        Statement statement1 = con.createStatement();
+        ResultSet resultSet1 = statement1.executeQuery(sql);
+        while (resultSet1.next()) {
+            int id_usager = resultSet1.getInt("id_usager");
+            Usager usager = new Usager("?");
+            usager.id=id_usager;
+            usager.updateWithId(con);
+            this.usager=usager;
 
+            long isbn = resultSet1.getLong("isbn");
+            Edition edition = new Edition(isbn);
+            edition.updateWithIsbn(con);
+            this.edition=edition;
+
+            Oeuvre oeuvre = edition.oeuvre;
+            this.oeuvre = oeuvre;
+
+            numero = resultSet1.getInt("numero_exemplaire");
+            dateEmprunt = resultSet1.getDate("date_emprunt").toLocalDate();
+            dateRetour = resultSet1.getDate("date_retour").toLocalDate();
+            deadline = resultSet1.getDate("deadline").toLocalDate();
+        }
+    }
 }

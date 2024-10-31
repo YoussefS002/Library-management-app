@@ -4,18 +4,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class nouvelEmpruntController {
     Usager usagerSelectionne;
-
     Oeuvre oeuvreSelectionnee;
     @FXML
     private ComboBox<String> cbOeuvre;
@@ -57,6 +60,12 @@ public class nouvelEmpruntController {
         dateEmprunt = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         dateEmpruntLBL.setText("Date d'emprunt : " + dateEmprunt.format(formatter));
+
+        //deadline
+        usagerSelectionne=loginController.currentUser;
+        int duree_max = usagerSelectionne.categorie.duree_max;
+        deadlineRetour=dateEmprunt.plusDays(duree_max);
+        deadlineRetourLBL.setText("Deadline de retour : " + deadlineRetour.format(formatter));
     }
 
     @FXML
@@ -96,15 +105,6 @@ public class nouvelEmpruntController {
     }
 
     @FXML
-    private void definirDateRetour() {
-        usagerSelectionne=loginController.currentUser;
-        int duree_max = usagerSelectionne.categorie.duree_max;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        deadlineRetour=dateEmprunt.plusDays(duree_max);
-        deadlineRetourLBL.setText("Deadline de retour : " + deadlineRetour.format(formatter));
-    }
-
-    @FXML
     private void ajouterEmprunt() throws SQLException {
         Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
 
@@ -126,7 +126,14 @@ public class nouvelEmpruntController {
         prep_statement.setDate(4, Date.valueOf(nouvelEmprunt.dateEmprunt));
         prep_statement.setDate(5, Date.valueOf(nouvelEmprunt.deadline));
         prep_statement.execute();
+
+        String sql2 = "UPDATE exemplaires SET emprunte = true WHERE numero = ?";
+        PreparedStatement preparedStatement2 = con.prepareStatement(sql2);
+        preparedStatement2.setInt(1, nouvelEmprunt.numero);
+        preparedStatement2.execute();
+
         con.close();
+
         Notifications.create()
                 .title("Nouvel Emprunt")
                 .text("Un nouvel emprunt a été fait.")
@@ -140,10 +147,25 @@ public class nouvelEmpruntController {
             }
             @Override
             protected void succeeded() {
-                Stage stage = (Stage) cbOeuvre.getScene().getWindow();
-                stage.close();
+                try {
+                    retour();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
         new Thread(task).start();
+    }
+    @FXML
+    AnchorPane mainContent;
+    @FXML
+    private void newView(String FXMLPath) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
+        Pane newLoadedPane = loader.load();
+        mainContent.getChildren().setAll(newLoadedPane);
+    }
+    @FXML
+    private void retour() throws IOException {
+        newView("main.fxml");
     }
 }

@@ -1,5 +1,7 @@
 package com.example.tp_bibliotheque;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,11 +9,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,7 +21,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class mainController {
-
+    @FXML
+    private Button retourButton;
     @FXML
     private TableView<Exemplaire> tableViewD;
     @FXML
@@ -90,9 +92,75 @@ public class mainController {
     private TableColumn<Oeuvre, String> auteursColumn;
 
     static int idUsagerSelectionne;
+    static int idEmpruntSelectionne;
+
+    @FXML
+    private AnchorPane mainContent;
 
     @FXML
     private void initialize() {
+        initData();
+    }
+
+    @FXML
+    private void newWindow (String FXMLpath) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLpath));
+        Parent root1 = loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Nouvelle oeuvre");
+        stage.setScene(new Scene(root1));
+        stage.show();
+    }
+
+    @FXML
+    private void newView (String FXMLpath) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLpath));
+        Pane newLoadedPane = loader.load();
+        mainContent.getChildren().setAll(newLoadedPane);
+    }
+
+    @FXML
+    private void goToNouvelleOeuvre() throws IOException {
+        newView("nouvelleOeuvre.fxml");
+    }
+
+    @FXML
+    private void goToNouvelEmprunt() throws IOException {
+        newView("nouvelEmprunt.fxml");
+    }
+    @FXML
+    private void goToNouvelleEdition() throws IOException {
+        newView("nouvelleEdition.fxml");
+    }
+    @FXML
+    private void goToNouveauxExemplaires() throws IOException {
+        newView("nouveauxExemplaires.fxml");
+    }
+    @FXML
+    private void effectuerRetour() throws SQLException {
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque", "root", "0000");
+        String retourQuery = "UPDATE emprunts SET date_retour = ? WHERE id_emprunt = ?";
+        PreparedStatement preparedStatement = con.prepareStatement(retourQuery);
+        preparedStatement.setDate(1, Date.valueOf(LocalDate.now()));
+        preparedStatement.setInt(2, idEmpruntSelectionne);
+        preparedStatement.execute();
+        Emprunt emprunt=new Emprunt();
+        emprunt.id=idEmpruntSelectionne;
+        emprunt.updateWithId(con);
+        String retourQuery2 = "UPDATE exemplaires SET emprunte = false WHERE numero = ?";
+        PreparedStatement preparedStatement2 = con.prepareStatement(retourQuery2);
+        preparedStatement2.setInt(1, emprunt.numero);
+        preparedStatement2.execute();
+        initData();
+    }
+
+    @FXML
+    private void changerCatégorie() throws IOException {
+        newWindow("nouvelUsager.fxml");
+    }
+
+
+    public void initData() {
         //oeuvres
 
         titreColumn.setCellValueFactory(new PropertyValueFactory<>("titre"));
@@ -175,6 +243,18 @@ public class mainController {
         dateEmpruntColumn.setCellValueFactory(new PropertyValueFactory<>("dateEmprunt"));
         deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
         dateRetourColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetour"));
+        //dateRetourColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDateRetour()));
+        dateRetourColumn.setCellFactory(column -> new TableCell<Emprunt, LocalDate>() {
+            @Override
+            protected void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date == null) {
+                    setText("Non rendu"); // Texte alternatif
+                } else {
+                    setText(date.toString()); // Affiche la date si elle existe
+                }
+            }
+        });
 
 
         ObservableList<Emprunt> emprunts = FXCollections.observableArrayList();
@@ -190,7 +270,7 @@ public class mainController {
         try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
              Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
-             while (resultSet.next()) {
+            while (resultSet.next()) {
                 int id_emprunt = resultSet.getInt("id_emprunt");
                 int id_usager = resultSet.getInt("id_usager");
                 Usager usager = new Usager("?");
@@ -205,11 +285,13 @@ public class mainController {
                 int numero = resultSet.getInt("numero_exemplaire");
                 LocalDate dateEmprunt = LocalDate.parse(resultSet.getString("date_emprunt"));
                 LocalDate deadline = LocalDate.parse(resultSet.getString("deadline"));
+
                 String dateRetourString = resultSet.getString("date_retour");
-                LocalDate dateRetour = LocalDate.parse("3000-01-01");
+                LocalDate dateRetour = null;
                 if (dateRetourString != null) {
                     dateRetour = LocalDate.parse(dateRetourString);
                 }
+
                 Emprunt emprunt=new Emprunt();
                 emprunt.id = id_emprunt;
                 emprunt.edition=edition;
@@ -264,7 +346,7 @@ public class mainController {
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque", "root", "0000");
              Statement statement = con.createStatement();
-             ResultSet resultSet = statement.executeQuery(recupererExemplaires)) {
+             ResultSet resultSet = statement.executeQuery(recupererExemplairesI)) {
             while (resultSet.next()) {
                 int numero = resultSet.getInt("numero");
                 Edition edition = new Edition(resultSet.getLong("isbn"));
@@ -280,45 +362,34 @@ public class mainController {
             throw new RuntimeException(e);
         }
         tableViewI.setItems(exemplairesI);
+        retourButton.setVisible(false);
 
-        tableViewU.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                idUsagerSelectionne = newValue.getId();
-                try {
-                    newWindow("historique.fxml");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+        //click emprunt
+        if (Objects.equals(loginController.currentUser.categorie.nom, "emprunteur")) {
+            tableViewE.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    idEmpruntSelectionne = newValue.getId();
+                    retourButton.setVisible(true);
                 }
-            }
+            });
+        }
+
+        //doubleclick usager
+        tableViewU.setRowFactory(tv -> {
+            TableRow<Usager> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    Usager usagerSelectionn = row.getItem();
+                    idUsagerSelectionne = usagerSelectionn.getId();
+                    try {
+                        newWindow("historique.fxml");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return row;
         });
-    }
 
-    @FXML
-    private void newWindow (String FXMLpath) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLpath));
-        Parent root1 = loader.load();
-        Stage stage = new Stage();
-        stage.setTitle("Nouvelle oeuvre");
-        stage.setScene(new Scene(root1));
-        stage.show();
     }
-
-    @FXML
-    private void goToNouvelleOeuvre() throws IOException {
-        newWindow("nouvelleOeuvre.fxml");
-    }
-
-    @FXML
-    private void goToNouvelEmprunt() throws IOException {
-        newWindow("nouvelEmprunt.fxml");
-    }
-    @FXML
-    private void goToNouvelleEdition() throws IOException {
-        newWindow("nouvelleEdition.fxml");
-    }
-    @FXML
-    private void goToNouveauxExemplaires() throws IOException {
-        newWindow("nouveauxExemplaires.fxml");
-    }
-
 }

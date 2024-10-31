@@ -2,12 +2,16 @@ package com.example.tp_bibliotheque;
 
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -55,8 +59,11 @@ public class nouvelUsagerController {
 
                     @Override
                     protected void succeeded() {
-                        Stage stage = (Stage) vBox.getScene().getWindow();
-                        stage.close();
+                        try {
+                            retour();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 };
                 new Thread(task).start();
@@ -71,5 +78,17 @@ public class nouvelUsagerController {
         } catch (Exception e){
             System.out.println(e);
         }
+    }
+    @FXML
+    AnchorPane mainContent;
+    @FXML
+    private void newView(String FXMLPath) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
+        Pane newLoadedPane = loader.load();
+        mainContent.getChildren().setAll(newLoadedPane);
+    }
+    @FXML
+    private void retour() throws IOException {
+        newView("main.fxml");
     }
 }

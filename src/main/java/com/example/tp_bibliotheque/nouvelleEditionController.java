@@ -3,11 +3,16 @@ package com.example.tp_bibliotheque;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 import javafx.concurrent.Task;
+
+import java.io.IOException;
 import java.sql.*;
 import java.util.List;
 
@@ -84,5 +89,17 @@ public class nouvelleEditionController {
         };
         new Thread(task).start();
 
+    }
+    @FXML
+    AnchorPane mainContent;
+    @FXML
+    private void newView(String FXMLPath) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
+        Pane newLoadedPane = loader.load();
+        mainContent.getChildren().setAll(newLoadedPane);
+    }
+    @FXML
+    private void retour() throws IOException {
+        newView("main.fxml");
     }
 }

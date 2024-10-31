@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.mainController">
+<AnchorPane fx:id="mainContent" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.mainController">
    <TabPane tabClosingPolicy="UNAVAILABLE" fx:id="tabPane" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
        <tabs>
            <Tab text="oeuvres">
@@ -66,7 +66,7 @@
                                        <TableColumn fx:id="dateRetourColumn" prefWidth="170" text="Date de retour" />
                                    </columns>
                                </TableView>
-
+                                <Button fx:id="retourButton" onAction="#effectuerRetour" text="Retourner ce livre"/>
                            </children>
                        </VBox>
                    </AnchorPane>

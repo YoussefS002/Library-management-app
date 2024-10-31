@@ -6,15 +6,19 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.tp_bibliotheque.nouvelEmpruntController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0"
+            fx:id="mainContent">
             <VBox>
                 <children>
+
                     <ComboBox fx:id="cbOeuvre" promptText="oeuvre" onAction="#afficherIsbns"/>
                     <ComboBox fx:id="cbIsbn" promptText="édition" onAction="#afficherNumeros"/>
                     <ComboBox fx:id="cbNumero" promptText="numéro"/>
                     <Label fx:id="dateEmpruntLBL"/>
                     <Label fx:id="deadlineRetourLBL"/>
                     <Button text="Valider" onAction="#ajouterEmprunt"/>
+                    <Button mnemonicParsing="false" onAction="#retour" text="Annuler" />
+
                 </children>
             </VBox>
 </AnchorPane>

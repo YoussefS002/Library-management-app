@@ -2,17 +2,20 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<AnchorPane fx:id="mainContent" prefHeight="200.0" prefWidth="233.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.nouvelleOeuvreController">
+   <VBox fx:id="vBox" >
+      <children>
+         <TextField fx:id="titreTF" promptText="titre" />
+         <TextField fx:id="premiere_parutionTF" promptText="première parution" />
+         <TextField fx:id="mot_cle1TF" promptText="mot clé 1" />
+         <TextField fx:id="mot_cle2TF" promptText="mot clé 2" />
+         <TextField fx:id="mot_cle3TF" promptText="mot clé 3" />
+         <TextField fx:id="mot_cle4TF" promptText="mot clé 4" />
+         <TextField fx:id="mot_cle5TF" promptText="mot clé 5" />
+         <Label text="Auteurs :" />
+         <Button mnemonicParsing="false" onAction="#ajouterOeuvre" text="Ajouter" />
+         <Button mnemonicParsing="false" onAction="#retour" text="Annuler" />
+      </children>
+   </VBox>
 
-<VBox fx:id="vBox" prefHeight="200.0" prefWidth="233.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.nouvelleOeuvreController">
-   <children>
-      <TextField fx:id="titreTF" promptText="titre" />
-      <TextField fx:id="premiere_parutionTF" promptText="première parution" />
-      <TextField fx:id="mot_cle1TF" promptText="mot clé 1" />
-      <TextField fx:id="mot_cle2TF" promptText="mot clé 2" />
-      <TextField fx:id="mot_cle3TF" promptText="mot clé 3" />
-      <TextField fx:id="mot_cle4TF" promptText="mot clé 4" />
-      <TextField fx:id="mot_cle5TF" promptText="mot clé 5" />
-      <Label text="Auteurs :" />
-      <Button mnemonicParsing="false" onAction="#ajouterOeuvre" text="Ajouter" />
-   </children>
-</VBox>
+</AnchorPane>
