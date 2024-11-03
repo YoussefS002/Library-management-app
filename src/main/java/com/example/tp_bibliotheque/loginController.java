@@ -66,7 +66,7 @@ public class loginController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLpath));
         Parent root1 = loader.load();
         Stage stage = new Stage();
-        stage.setTitle("Nouvelle oeuvre");
+        stage.setTitle("Gestion de bibliothèque");
         stage.setScene(new Scene(root1, 800, 600));
         stage.show();
     }

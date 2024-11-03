@@ -83,8 +83,11 @@ public class nouvelleEditionController {
 
             @Override
             protected void succeeded() {
-                Stage stage = (Stage) cbOeuvre.getScene().getWindow();
-                stage.close();
+                try {
+                    retour();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
         new Thread(task).start();

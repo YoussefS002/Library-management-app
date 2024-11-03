@@ -68,7 +68,7 @@ public class Emprunt {
 
             numero = resultSet1.getInt("numero_exemplaire");
             dateEmprunt = resultSet1.getDate("date_emprunt").toLocalDate();
-            dateRetour = resultSet1.getDate("date_retour").toLocalDate();
+            dateRetour = resultSet1.getDate("date_retour") != null ? resultSet1.getDate("date_retour").toLocalDate() : null;
             deadline = resultSet1.getDate("deadline").toLocalDate();
         }
     }

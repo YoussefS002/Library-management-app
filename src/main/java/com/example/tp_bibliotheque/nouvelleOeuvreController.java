@@ -15,6 +15,7 @@ import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 
 public class nouvelleOeuvreController {
     @FXML
@@ -76,7 +77,7 @@ public class nouvelleOeuvreController {
                 Auteur auteurSelectionne = new Auteur();
                 auteurSelectionne.prenom = L[0];
                 auteurSelectionne.nom = L[1];
-                auteurSelectionne.dateNaissance = L[2];
+                auteurSelectionne.dateNaissance = LocalDate.parse(L[2]);
                 auteurSelectionne.id = auteurSelectionne.recupererId(con);
                 String oeuvres_auteursSql = "INSERT INTO oeuvres_auteurs(id_oeuvre, id_auteur) VALUES (?, ?) ";
                 PreparedStatement prep_stmt_oeuvres_auteurs = con.prepareStatement(oeuvres_auteursSql);

@@ -65,12 +65,13 @@ public class historiqueController {
                 }
                 Emprunt emprunt=new Emprunt();
                 emprunt.id = id_emprunt;
-                emprunt.edition=edition;
-                emprunt.numero = numero;
-                emprunt.dateEmprunt = dateEmprunt;
-                emprunt.deadline = deadline;
-                emprunt.dateRetour = dateRetour;
-                emprunt.oeuvre = oeuvre;
+                emprunt.updateWithId(con);
+//                emprunt.edition=edition;
+//                emprunt.numero = numero;
+//                emprunt.dateEmprunt = dateEmprunt;
+//                emprunt.deadline = deadline;
+//                emprunt.dateRetour = dateRetour;
+//                emprunt.oeuvre = oeuvre;
                 emprunts.add(emprunt);
             }
         } catch (Exception e) {

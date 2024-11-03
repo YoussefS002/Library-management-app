@@ -1,10 +1,7 @@
 package com.example.tp_bibliotheque;
 
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,6 +19,16 @@ import java.util.Objects;
 
 public class mainController {
     @FXML
+    private Button nouvelleOeuvreBtn;
+    @FXML
+    private Button nouvelleEditionBtn;
+    @FXML
+    private Button nouvelAuteurBtn;
+    @FXML
+    private Button nouveauxExemplairesBtn;
+    @FXML
+    private Tab empruntsTab;
+    @FXML
     private Button gererCategoriesBtn;
     @FXML
     private Button adminBtn;
@@ -34,23 +41,25 @@ public class mainController {
     @FXML
     private Button retourButton;
     @FXML
-    private TableView<Exemplaire> tableViewD;
+    private TableView<Edition> tableViewD;
     @FXML
-    private TableColumn<Exemplaire, Integer> numeroColumnD;
+    private TableColumn<Edition, Long> isbnColumnD;
     @FXML
-    private TableColumn<Exemplaire, Edition> editionColumnD;
+    private TableColumn<Edition, String> editeurColumnD;
     @FXML
-    private TableColumn<Exemplaire, Oeuvre> oeuvreColumnD;
+    private TableColumn<Edition, Integer> nbDisposColumnD;
+    @FXML
+    private TableColumn<Edition, Oeuvre> oeuvreColumnD;
 
 
     @FXML
-    private TableView<Exemplaire> tableViewI;
+    private TableView<Edition> tableViewI;
     @FXML
-    private TableColumn<Exemplaire, Integer> numeroColumnI;
+    private TableColumn<Edition, Long> isbnColumnI;
     @FXML
-    private TableColumn<Exemplaire, Edition> editionColumnI;
+    private TableColumn<Edition, String> editeurColumnI;
     @FXML
-    private TableColumn<Exemplaire, Oeuvre> oeuvreColumnI;
+    private TableColumn<Edition, Oeuvre> oeuvreColumnI;
 
     @FXML
     private TabPane tabPane;
@@ -103,6 +112,7 @@ public class mainController {
 
     static int idUsagerSelectionne;
     static int idEmpruntSelectionne;
+    static int idOeuvreSelectionnee;
 
     @FXML
     private AnchorPane mainContent;
@@ -145,6 +155,10 @@ public class mainController {
     @FXML
     private void goToNouveauxExemplaires() throws IOException {
         newView("nouveauxExemplaires.fxml");
+    }
+    @FXML
+    private void goToNouvelAuteur() throws IOException {
+        newView("nouvelAuteur.fxml");
     }
     @FXML
     private void effectuerRetour() throws SQLException {
@@ -203,7 +217,6 @@ public class mainController {
     private void placerEnListeRouge() throws SQLException {
         changerCategorie( "liste rouge");
     }
-
     public void initData() {
         //oeuvres
 
@@ -278,6 +291,7 @@ public class mainController {
         } else {
             tabPane.getTabs().remove(usagersTab);
         }
+
         //emprunts
         idColumnE.setCellValueFactory(new PropertyValueFactory<>("id"));
         oeuvreColumn.setCellValueFactory(new PropertyValueFactory<>("oeuvre"));
@@ -287,27 +301,16 @@ public class mainController {
         dateEmpruntColumn.setCellValueFactory(new PropertyValueFactory<>("dateEmprunt"));
         deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
         dateRetourColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetour"));
-        //dateRetourColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getDateRetour()));
-        dateRetourColumn.setCellFactory(column -> new TableCell<Emprunt, LocalDate>() {
-            @Override
-            protected void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                if (date == null) {
-                    setText("Non rendu"); // Texte alternatif
-                } else {
-                    setText(date.toString()); // Affiche la date si elle existe
-                }
-            }
-        });
 
 
         ObservableList<Emprunt> emprunts = FXCollections.observableArrayList();
-
         String recupererEmprunts = "SELECT id_emprunt, id_usager, isbn, numero_exemplaire, date_emprunt, deadline, date_retour FROM emprunts";
         String recupererEmpruntsUsager = "SELECT id_emprunt, id_usager, isbn, numero_exemplaire, date_emprunt, deadline, date_retour FROM emprunts WHERE id_usager="+loginController.currentUser.id;
         String sql;
         if (Objects.equals(loginController.currentUser.categorie.nom, "emprunteur")) {
             sql = recupererEmpruntsUsager;
+            empruntsTab.setText("Mes emprunts");
+            usagerColumn.setVisible(false);
         } else {
             sql = recupererEmprunts;
         }
@@ -330,11 +333,13 @@ public class mainController {
                 LocalDate dateEmprunt = LocalDate.parse(resultSet.getString("date_emprunt"));
                 LocalDate deadline = LocalDate.parse(resultSet.getString("deadline"));
 
-                String dateRetourString = resultSet.getString("date_retour");
+                LocalDate dateRetour = resultSet.getDate("date_retour") != null ? resultSet.getDate("date_retour").toLocalDate() : null;
+
+                /*String dateRetourString = resultSet.getString("date_retour");
                 LocalDate dateRetour = null;
                 if (dateRetourString != null) {
                     dateRetour = LocalDate.parse(dateRetourString);
-                }
+                }*/
 
                 Emprunt emprunt=new Emprunt();
                 emprunt.id = id_emprunt;
@@ -354,88 +359,91 @@ public class mainController {
 
         //livres disponibles
 
-        String recupererExemplaires = "Select numero, isbn from exemplaires where emprunte = false";
-        numeroColumnD.setCellValueFactory(new PropertyValueFactory<>("numero"));
-        editionColumnD.setCellValueFactory(new PropertyValueFactory<>("edition"));
+        String recupererEditions = "Select isbn from editions";
+        isbnColumnD.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        editeurColumnD.setCellValueFactory(new PropertyValueFactory<>("editeur"));
+        nbDisposColumnD.setCellValueFactory(new PropertyValueFactory<>("nbDispos"));
         oeuvreColumnD.setCellValueFactory(new PropertyValueFactory<>("oeuvre"));
 
-        ObservableList<Exemplaire> exemplaires = FXCollections.observableArrayList();
+        ObservableList<Edition> editions = FXCollections.observableArrayList();
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque", "root", "0000");
              Statement statement = con.createStatement();
-             ResultSet resultSet = statement.executeQuery(recupererExemplaires)) {
+             ResultSet resultSet = statement.executeQuery(recupererEditions)) {
             while (resultSet.next()) {
-                int numero = resultSet.getInt("numero");
-                Edition edition = new Edition(resultSet.getLong("isbn"));
+                long isbn = resultSet.getLong("isbn");
+                Edition edition = new Edition(isbn);
                 edition.updateWithIsbn(con);
-                Oeuvre oeuvre = edition.oeuvre;
-                Exemplaire exemplaire = new Exemplaire();
-                exemplaire.edition=edition;
-                exemplaire.numero=numero;
-                exemplaire.oeuvre=oeuvre;
-                exemplaires.add(exemplaire);
+                if (edition.nbDispos > 0)
+                    editions.add(edition);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        tableViewD.setItems(exemplaires);
+        tableViewD.setItems(editions);
 
         //livres indisponibles
-        String recupererExemplairesI = "Select numero, isbn from exemplaires where emprunte = true";
-        numeroColumnI.setCellValueFactory(new PropertyValueFactory<>("numero"));
-        editionColumnI.setCellValueFactory(new PropertyValueFactory<>("edition"));
+
+        isbnColumnI.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        editeurColumnI.setCellValueFactory(new PropertyValueFactory<>("editeur"));
         oeuvreColumnI.setCellValueFactory(new PropertyValueFactory<>("oeuvre"));
 
-        ObservableList<Exemplaire> exemplairesI = FXCollections.observableArrayList();
+        editions = FXCollections.observableArrayList();
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque", "root", "0000");
              Statement statement = con.createStatement();
-             ResultSet resultSet = statement.executeQuery(recupererExemplairesI)) {
+             ResultSet resultSet = statement.executeQuery(recupererEditions)) {
             while (resultSet.next()) {
-                int numero = resultSet.getInt("numero");
-                Edition edition = new Edition(resultSet.getLong("isbn"));
+                long isbn = resultSet.getLong("isbn");
+                Edition edition = new Edition(isbn);
                 edition.updateWithIsbn(con);
-                Oeuvre oeuvre = edition.oeuvre;
-                Exemplaire exemplaire = new Exemplaire();
-                exemplaire.edition=edition;
-                exemplaire.numero=numero;
-                exemplaire.oeuvre=oeuvre;
-                exemplairesI.add(exemplaire);
+                if (edition.nbDispos == 0)
+                    editions.add(edition);
+
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        tableViewI.setItems(exemplairesI);
-
+        tableViewI.setItems(editions);
 
         //click emprunt
         retourButton.setVisible(false);
-        if (Objects.equals(loginController.currentUser.categorie.nom, "emprunteur")) {
-            tableViewE.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue != null) {
-                    idEmpruntSelectionne = newValue.getId();
-                    retourButton.setVisible(true);
-                }
-            });
-        }
+        tableViewE.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                idEmpruntSelectionne = newValue.getId();
+                retourButton.setVisible(true);
+            }
+        });
 
-        //click usager
+
+        //permissions
         adminBtn.setVisible(false);
         gestionnaireBtn.setVisible(false);
         emprunteurBtn.setVisible(false);
         listeRougeBtn.setVisible(false);
-        gererCategoriesBtn.setVisible(false);
-        if (Objects.equals(loginController.currentUser.categorie.nom, "admin")) {
-            gererCategoriesBtn.setVisible(true);
-            tableViewU.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue != null) {
-                    idUsagerSelectionne = newValue.getId();
+        if (Objects.equals(loginController.currentUser.categorie.nom, "gestionnaire"))
+            gererCategoriesBtn.setVisible(false);
+        tableViewU.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                idUsagerSelectionne = newValue.getId();
+                if (Objects.equals(loginController.currentUser.categorie.nom, "admin")) {
                     adminBtn.setVisible(true);
                     gestionnaireBtn.setVisible(true);
-                    emprunteurBtn.setVisible(true);
-                    listeRougeBtn.setVisible(true);
                 }
-            });
+                emprunteurBtn.setVisible(true);
+                listeRougeBtn.setVisible(true);
+            }
+        });
+
+        nouvelleOeuvreBtn.setVisible(false);
+        nouvelAuteurBtn.setVisible(false);
+        nouvelleEditionBtn.setVisible(false);
+        nouveauxExemplairesBtn.setVisible(false);
+        if (Objects.equals(loginController.currentUser.categorie.nom, "admin") || Objects.equals(loginController.currentUser.categorie.nom, "gestionnaire")) {
+            nouvelleOeuvreBtn.setVisible(true);
+            nouvelAuteurBtn.setVisible(true);
+            nouvelleEditionBtn.setVisible(true);
+            nouveauxExemplairesBtn.setVisible(true);
         }
 
         //doubleclick usager
@@ -443,8 +451,8 @@ public class mainController {
             TableRow<Usager> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    Usager usagerSelectionn = row.getItem();
-                    idUsagerSelectionne = usagerSelectionn.getId();
+                    Usager usagerSelectionne = row.getItem();
+                    idUsagerSelectionne = usagerSelectionne.getId();
                     try {
                         newWindow("historique.fxml");
                     } catch (IOException e) {
@@ -455,5 +463,28 @@ public class mainController {
             return row;
         });
 
+        //doubleclick oeuvre
+        tableView.setRowFactory(tv -> {
+            TableRow<Oeuvre> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    Oeuvre oeuvreSelectionnee = row.getItem();
+                    idOeuvreSelectionnee = oeuvreSelectionnee.id;
+                    try {
+                        newWindow("editions.fxml");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return row;
+        });
+
+    }
+    @FXML
+    private void disconnect() throws IOException {
+        Stage stage = (Stage) tableView.getScene().getWindow();
+        stage.close();
+        newWindow("login.fxml");
     }
 }

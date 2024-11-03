@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane fx:id="mainContent" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.mainController">
-   <TabPane tabClosingPolicy="UNAVAILABLE" fx:id="tabPane" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+   <TabPane tabClosingPolicy="UNAVAILABLE" fx:id="tabPane" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
        <tabs>
            <Tab text="oeuvres">
                <content>
@@ -20,9 +20,10 @@
                                    </columns>
                                </TableView>
                                <HBox alignment="CENTER" spacing="5">
-                                   <Button mnemonicParsing="false" onAction="#goToNouvelleOeuvre" text="Nouvelle oeuvre" />
-                                   <Button mnemonicParsing="false" onAction="#goToNouvelleEdition" text="Nouvelle édition" />
-                                   <Button mnemonicParsing="false" onAction="#goToNouveauxExemplaires" text="Ajout d'exemplaires" />
+                                   <Button mnemonicParsing="false" onAction="#goToNouvelleOeuvre" text="Nouvelle oeuvre" fx:id="nouvelleOeuvreBtn"/>
+                                   <Button mnemonicParsing="false" onAction="#goToNouvelleEdition" text="Nouvelle édition" fx:id="nouvelleEditionBtn"/>
+                                   <Button mnemonicParsing="false" onAction="#goToNouvelAuteur" text="Nouvel auteur" fx:id="nouvelAuteurBtn"/>
+                                   <Button mnemonicParsing="false" onAction="#goToNouveauxExemplaires" text="Ajout d'exemplaires" fx:id="nouveauxExemplairesBtn" />
                                </HBox>
                            </children>
                        </VBox>
@@ -55,7 +56,7 @@
                    </AnchorPane>
                </content>
            </Tab>
-           <Tab text="Emprunts">
+           <Tab fx:id="empruntsTab" text="Emprunts">
                <content>
                    <AnchorPane>
                        <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
@@ -86,16 +87,19 @@
                                <HBox>
                                    <TableView fx:id="tableViewD" prefHeight="400.0">
                                        <columns>
-                                           <TableColumn fx:id="numeroColumnD" prefWidth="50" text="Numéro" />
+                                           <TableColumn fx:id="isbnColumnD" prefWidth="50" text="ISBN" />
                                            <TableColumn fx:id="oeuvreColumnD" prefWidth="50" text="Oeuvre" />
-                                           <TableColumn fx:id="editionColumnD" prefWidth="50" text="ISBN" />
+                                           <TableColumn fx:id="editeurColumnD" prefWidth="50" text="Editeur" />
+                                           <TableColumn fx:id="nbDisposColumnD" prefWidth="50" text="Nombre disponible" />
+
                                        </columns>
                                    </TableView>
                                    <TableView fx:id="tableViewI" prefHeight="400.0">
                                        <columns>
-                                           <TableColumn fx:id="numeroColumnI" prefWidth="50" text="Numéro" />
+                                           <TableColumn fx:id="isbnColumnI" prefWidth="50" text="ISBN" />
                                            <TableColumn fx:id="oeuvreColumnI" prefWidth="50" text="Oeuvre" />
-                                           <TableColumn fx:id="editionColumnI" prefWidth="50" text="ISBN" />
+                                           <TableColumn fx:id="editeurColumnI" prefWidth="50" text="Editeur" />
+
                                        </columns>
                                    </TableView>
                                </HBox>
@@ -107,5 +111,5 @@
            </Tab>
        </tabs>
    </TabPane>
-
+    <Button onAction="#disconnect" text="Se déconnecter" AnchorPane.bottomAnchor="0"/>
 </AnchorPane>

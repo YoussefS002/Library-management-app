@@ -8,6 +8,7 @@ public class Edition {
     int anneeEdition;
     Oeuvre oeuvre;
     int nbExemplaires;
+    int nbDispos;
     public Edition(long isbn) {
         this.isbn = isbn;
     }
@@ -23,6 +24,14 @@ public class Edition {
             oeuvre.id = rs.getInt("id_oeuvre");
             oeuvre.updateWithId(con);
             nbExemplaires = rs.getInt("nb_exemplaires");
+        }
+
+        String recupererDispos = "SELECT COUNT(*) FROM exemplaires WHERE isbn = ? AND emprunte = false";
+        ps = con.prepareStatement(recupererDispos);
+        ps.setLong(1, isbn);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            nbDispos = rs.getInt(1);
         }
     }
 
@@ -70,5 +79,23 @@ public class Edition {
     @Override
     public String toString() {
         return Long.toString(isbn);
+    }
+    public int getNbExemplaires() {
+        return nbExemplaires;
+    }
+    public int getAnneeEdition() {
+        return anneeEdition;
+    }
+    public String getEditeur() {
+        return Editeur;
+    }
+    public long getIsbn() {
+        return isbn;
+    }
+    public int getNbDispos() {
+        return nbDispos;
+    }
+    public Oeuvre getOeuvre() {
+        return oeuvre;
     }
 }
