@@ -2,6 +2,7 @@ package com.example.tp_bibliotheque;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -128,7 +129,7 @@ public class mainController {
         Parent root1 = loader.load();
         Stage stage = new Stage();
         stage.setTitle("Nouvelle oeuvre");
-        stage.setScene(new Scene(root1));
+        stage.setScene(new Scene(root1, 1000, 600));
         stage.show();
     }
 
@@ -175,6 +176,12 @@ public class mainController {
         PreparedStatement preparedStatement2 = con.prepareStatement(retourQuery2);
         preparedStatement2.setInt(1, emprunt.numero);
         preparedStatement2.execute();
+        if (LocalDate.now().isAfter(emprunt.getDeadline())) {
+            String listeRougeQuery = "UPDATE usagers SET categorie = 'liste rouge' WHERE id_usager = ? ";
+            PreparedStatement preparedStatement3 = con.prepareStatement(listeRougeQuery);
+            preparedStatement3.setInt(1, idUsagerSelectionne);
+            preparedStatement3.execute();
+        }
         initData();
     }
 
@@ -217,6 +224,8 @@ public class mainController {
     private void placerEnListeRouge() throws SQLException {
         changerCategorie( "liste rouge");
     }
+    @FXML
+    TextField searchField;
     public void initData() {
         //oeuvres
 
@@ -232,19 +241,8 @@ public class mainController {
              ResultSet resultSet = statement.executeQuery(recupererOeuvres)) {
             while (resultSet.next()) {
                 int id_oeuvre = resultSet.getInt("id_oeuvre");
-                String titre = resultSet.getString("titre");
-                int premiere_parution = resultSet.getInt("premiere_parution");
-                String mot_cle1 = resultSet.getString("mot_cle1");
-                String mot_cle2 = resultSet.getString("mot_cle2");
-                String mot_cle3 = resultSet.getString("mot_cle3");
-                String mot_cle4 = resultSet.getString("mot_cle4");
-                String mot_cle5 = resultSet.getString("mot_cle5");
-                Oeuvre oeuvreAAfficher = new Oeuvre(titre, premiere_parution, mot_cle1);
+                Oeuvre oeuvreAAfficher = new Oeuvre();
                 oeuvreAAfficher.id = id_oeuvre;
-                oeuvreAAfficher.mot_cle2 = mot_cle2;
-                oeuvreAAfficher.mot_cle3 = mot_cle3;
-                oeuvreAAfficher.mot_cle4 = mot_cle4;
-                oeuvreAAfficher.mot_cle5 = mot_cle5;
                 oeuvreAAfficher.updateWithId(con);
                 oeuvres.add(oeuvreAAfficher);
             }
@@ -335,11 +333,6 @@ public class mainController {
 
                 LocalDate dateRetour = resultSet.getDate("date_retour") != null ? resultSet.getDate("date_retour").toLocalDate() : null;
 
-                /*String dateRetourString = resultSet.getString("date_retour");
-                LocalDate dateRetour = null;
-                if (dateRetourString != null) {
-                    dateRetour = LocalDate.parse(dateRetourString);
-                }*/
 
                 Emprunt emprunt=new Emprunt();
                 emprunt.id = id_emprunt;
@@ -380,7 +373,21 @@ public class mainController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        tableViewD.setItems(editions);
+
+        FilteredList<Edition> filteredEditions = new FilteredList<>(editions, p -> true);
+
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredEditions.setPredicate(edition -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+                return edition.getOeuvre().toString().toLowerCase().contains(lowerCaseFilter);
+            });
+        });
+
+        tableViewD.setItems(filteredEditions);
 
         //livres indisponibles
 
@@ -410,8 +417,12 @@ public class mainController {
         retourButton.setVisible(false);
         tableViewE.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                idEmpruntSelectionne = newValue.getId();
-                retourButton.setVisible(true);
+                Emprunt empruntSelectionne = newValue;
+                idEmpruntSelectionne = empruntSelectionne.getId();
+                if (empruntSelectionne.usager.id==loginController.currentUser.id && empruntSelectionne.dateRetour==null) {
+                    retourButton.setVisible(true);
+                }
+
             }
         });
 

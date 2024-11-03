@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.tp_bibliotheque.historiqueController"
-            prefHeight="400.0" prefWidth="600.0">
-    <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
+            prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #E8F5E9;">
+    <VBox alignment="CENTER" spacing="10" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
         <children>
-            <TableView fx:id="tableViewE" prefHeight="400.0">
+            <Text text="Historique des emprunts" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <TableView fx:id="tableViewE" prefHeight="500.0" prefWidth="960.0">
                 <columns>
-                    <TableColumn fx:id="idColumnE" prefWidth="190" text="Identifiant" />
-                    <TableColumn fx:id="oeuvreColumn" prefWidth="146" text="Oeuvre" />
-                    <TableColumn fx:id="editionColumn" prefWidth="170" text="ISBN" />
-                    <TableColumn fx:id="numeroColumn" prefWidth="170" text="Numéro" />
-                    <TableColumn fx:id="dateEmpruntColumn" prefWidth="170" text="Date d'emprunt" />
-                    <TableColumn fx:id="deadlineColumn" prefWidth="170" text="Deadline" />
-                    <TableColumn fx:id="dateRetourColumn" prefWidth="170" text="Date de retour" />
+                    <TableColumn fx:id="idColumnE" prefWidth="120" text="Identifiant" />
+                    <TableColumn fx:id="oeuvreColumn" prefWidth="200" text="Œuvre" />
+                    <TableColumn fx:id="editionColumn" prefWidth="120" text="ISBN" />
+                    <TableColumn fx:id="numeroColumn" prefWidth="120" text="Numéro" />
+                    <TableColumn fx:id="dateEmpruntColumn" prefWidth="130" text="Date d'emprunt" />
+                    <TableColumn fx:id="deadlineColumn" prefWidth="130" text="Deadline" />
+                    <TableColumn fx:id="dateRetourColumn" prefWidth="130" text="Date de retour" />
                 </columns>
             </TableView>
-
         </children>
     </VBox>
 </AnchorPane>

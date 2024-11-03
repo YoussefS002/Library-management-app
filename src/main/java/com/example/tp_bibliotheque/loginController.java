@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 public class loginController {
@@ -21,8 +24,8 @@ public class loginController {
     static Usager currentUser;
     @FXML
     private void login() throws SQLException, IOException {
-        String email = this.emailTF.getText().toLowerCase();
-        String password = this.passwordTF.getText();
+        String email = emailTF.getText().toLowerCase();
+        String password = hashPassword(passwordTF.getText());
         String query = "SELECT * FROM usagers WHERE email = '" + email + "' AND motdepasse = '" + password + "'";
         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
         Statement statement = con.createStatement();
@@ -67,12 +70,28 @@ public class loginController {
         Parent root1 = loader.load();
         Stage stage = new Stage();
         stage.setTitle("Gestion de bibliothèque");
-        stage.setScene(new Scene(root1, 800, 600));
+        stage.setScene(new Scene(root1, 1200, 650));
         stage.show();
     }
 
     @FXML
     private void goToNouvelUsager() throws IOException {
         newWindow("nouvelUsager.fxml");
+    }
+    public static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedHash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder(2 * encodedHash.length);
+            for (byte b : encodedHash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Erreur de hachage de mot de passe", e);
+        }
     }
 }

@@ -3,6 +3,8 @@ package com.example.tp_bibliotheque;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -12,6 +14,9 @@ import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,7 +46,7 @@ public class nouvelUsagerController {
             String motdepasse = passwordTF.getText();
             String confirmation = confirmationTF.getText();
             if (Objects.equals(motdepasse, confirmation)){
-                nouvelUsager.motdepasse=motdepasse;
+                nouvelUsager.motdepasse=hashPassword(motdepasse);
                 nouvelUsager.ajouter(con);
                 con.close();
 
@@ -82,13 +87,33 @@ public class nouvelUsagerController {
     @FXML
     AnchorPane mainContent;
     @FXML
-    private void newView(String FXMLPath) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
-        Pane newLoadedPane = loader.load();
-        mainContent.getChildren().setAll(newLoadedPane);
+    private void newWindow (String FXMLpath) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLpath));
+        Parent root1 = loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Gestion de bibliothèque");
+        stage.setScene(new Scene(root1, 400, 300));
+        stage.show();
     }
     @FXML
     private void retour() throws IOException {
-        newView("main.fxml");
+        Stage stage = (Stage) mainContent.getScene().getWindow();
+        stage.close();
+    }
+    public static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedHash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder(2 * encodedHash.length);
+            for (byte b : encodedHash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

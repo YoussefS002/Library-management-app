@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.tp_bibliotheque.editionsController"
-            prefHeight="400.0" prefWidth="600.0">
-    <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
+            prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #E8F5E9;">
+    <VBox alignment="CENTER" spacing="10" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
         <children>
-            <TableView fx:id="tableView" prefHeight="400.0">
+            <Text text="Éditions" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <TableView fx:id="tableView" prefHeight="500.0" prefWidth="960.0">
                 <columns>
-                    <TableColumn fx:id="isbnColumn" prefWidth="190" text="ISBN" />
-                    <TableColumn fx:id="editeurColumn" prefWidth="146" text="Editeur" />
-                    <TableColumn fx:id="anneeEditionColumn" prefWidth="170" text="Année d'édition" />
-                    <TableColumn fx:id="nbExemplairesColumn" prefWidth="170" text="Nombre d'exemplaires" />
+                    <TableColumn fx:id="isbnColumn" prefWidth="230" text="ISBN" />
+                    <TableColumn fx:id="editeurColumn" prefWidth="230" text="Éditeur" />
+                    <TableColumn fx:id="anneeEditionColumn" prefWidth="230" text="Année d'édition" />
+                    <TableColumn fx:id="nbExemplairesColumn" prefWidth="230" text="Nombre d'exemplaires" />
                 </columns>
             </TableView>
-
         </children>
     </VBox>
 </AnchorPane>

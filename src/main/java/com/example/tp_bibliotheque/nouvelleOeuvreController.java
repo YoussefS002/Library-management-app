@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -18,6 +19,8 @@ import java.sql.*;
 import java.time.LocalDate;
 
 public class nouvelleOeuvreController {
+    @FXML
+    private HBox hBox;
     @FXML
     TextField titreTF;
     @FXML
@@ -34,32 +37,36 @@ public class nouvelleOeuvreController {
     TextField mot_cle5TF;
     @FXML
     private VBox vBox;
-    private CheckComboBox<String> checkComboBox;
+    private CheckComboBox<Auteur> checkComboBox;
 
     public void initialize() {
-        ObservableList<String> auteurs = FXCollections.observableArrayList();
-        String auteurs_query = "SELECT prenom, nom, date_naissance FROM auteurs";
+        ObservableList<Auteur> auteurs = FXCollections.observableArrayList();
+        String auteurs_query = "SELECT id_auteur FROM auteurs";
         try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
              Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery(auteurs_query)) {
              while (resultSet.next()) {
-                 String nom = resultSet.getString("nom");
-                 String prenom = resultSet.getString("prenom");
-                 String date_naissance = resultSet.getString("date_naissance");
-                 auteurs.add(prenom + " " + nom + " " + date_naissance);
+                 int id_auteur = resultSet.getInt("id_auteur");
+                 Auteur auteur = new Auteur();
+                 auteur.id=id_auteur;
+                 auteur.updateWithId(con);
+                 auteurs.add(auteur);
              }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        checkComboBox = new CheckComboBox(auteurs);
-        vBox.getChildren().add(8, checkComboBox);
+        checkComboBox = new CheckComboBox<Auteur>(auteurs);
+        hBox.getChildren().add(1, checkComboBox);
     }
     @FXML
     protected void ajouterOeuvre() {
         try{
             Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
 
-            Oeuvre nouvelleOeuvre = new Oeuvre(titreTF.getText(), Integer.parseInt(premiere_parutionTF.getText()), mot_cle1TF.getText());
+            Oeuvre nouvelleOeuvre = new Oeuvre();
+            nouvelleOeuvre.titre = titreTF.getText();
+            nouvelleOeuvre.premiere_parution = Integer.parseInt(premiere_parutionTF.getText());
+            nouvelleOeuvre.mot_cle1=mot_cle1TF.getText();
             nouvelleOeuvre.mot_cle2=mot_cle2TF.getText();
             nouvelleOeuvre.mot_cle3=mot_cle3TF.getText();
             nouvelleOeuvre.mot_cle4=mot_cle4TF.getText();
@@ -70,15 +77,9 @@ public class nouvelleOeuvreController {
                 nouvelleOeuvre.id = generatedKeys.getInt(1);
             }
 
-            ObservableList<String> selectedAuthors = checkComboBox.getCheckModel().getCheckedItems();
+            ObservableList<Auteur> selectedAuthors = checkComboBox.getCheckModel().getCheckedItems();
             for (int i = 0; i < selectedAuthors.size(); i++) {
-                String nomPrenomDateAuteur = selectedAuthors.get(i);
-                String[] L = nomPrenomDateAuteur.split(" ");
-                Auteur auteurSelectionne = new Auteur();
-                auteurSelectionne.prenom = L[0];
-                auteurSelectionne.nom = L[1];
-                auteurSelectionne.dateNaissance = LocalDate.parse(L[2]);
-                auteurSelectionne.id = auteurSelectionne.recupererId(con);
+                Auteur auteurSelectionne = selectedAuthors.get(i);
                 String oeuvres_auteursSql = "INSERT INTO oeuvres_auteurs(id_oeuvre, id_auteur) VALUES (?, ?) ";
                 PreparedStatement prep_stmt_oeuvres_auteurs = con.prepareStatement(oeuvres_auteursSql);
                 prep_stmt_oeuvres_auteurs.setInt(1, nouvelleOeuvre.id);

@@ -2,22 +2,23 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.tp_bibliotheque.nouvelleEditionController"
-            prefHeight="400.0" prefWidth="600.0"
-            fx:id="mainContent">
-    <VBox>
+            prefHeight="650.0" prefWidth="1200.0"
+            fx:id="mainContent" style="-fx-background-color: #E8F5E9;">
+    <VBox alignment="CENTER" spacing="15" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
         <children>
-            <ComboBox fx:id="cbOeuvre" promptText="oeuvre" />
-            <TextField fx:id="tfIsbn" promptText="isbn" />
-            <TextField fx:id="tfEditeur" promptText="editeur" />
-            <TextField fx:id="tfAnneeEdition" promptText="année d'édition" />
-            <TextField fx:id="tfNbExemplaires" promptText="nombre d'exemplaires" />
-            <Button mnemonicParsing="false" onAction="#ajouterEdition" text="Ajouter" />
-            <Button mnemonicParsing="false" onAction="#retour" text="Annuler" />
+            <Text text="Ajouter une nouvelle édition" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <ComboBox fx:id="cbOeuvre" promptText="Œuvre" style="-fx-background-color: #FFFFFF;" />
+            <TextField fx:id="tfIsbn" promptText="ISBN" style="-fx-background-color: #FFFFFF;" />
+            <TextField fx:id="tfEditeur" promptText="Éditeur" style="-fx-background-color: #FFFFFF;" />
+            <TextField fx:id="tfAnneeEdition" promptText="Année d'édition" style="-fx-background-color: #FFFFFF;" />
+            <TextField fx:id="tfNbExemplaires" promptText="Nombre d'exemplaires" style="-fx-background-color: #FFFFFF;" />
+            <Button text="Ajouter" onAction="#ajouterEdition" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+            <Button mnemonicParsing="false" onAction="#retour" text="Annuler" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-weight: bold;" />
         </children>
     </VBox>
-
 </AnchorPane>

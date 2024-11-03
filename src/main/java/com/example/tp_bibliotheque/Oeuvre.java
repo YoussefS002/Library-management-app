@@ -16,11 +16,7 @@ public class Oeuvre {
     String mots_cles;
     String auteurs;
 
-    public Oeuvre(String titre, int premiere_parution, String mot_cle1) {
-        this.titre = titre;
-        this.premiere_parution = premiere_parution;
-        this.mot_cle1 = mot_cle1;
-    }
+
     public ResultSet ajouter (Connection con) throws SQLException {
         String oeuvreSql = "INSERT INTO oeuvres (titre, premiere_parution, mot_cle1, mot_cle2, mot_cle3, mot_cle4, mot_cle5) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prep_stmt_oeuvre = con.prepareStatement(oeuvreSql, Statement.RETURN_GENERATED_KEYS);
@@ -75,16 +71,6 @@ public class Oeuvre {
         if (mot_cle5!=null && !mot_cle5.isEmpty())
             motsList.add(mot_cle5);
         mots_cles = String.join(", ", motsList);
-    }
-    public void updateId (Connection con) throws SQLException {
-        String idRecupSql = "SELECT id_oeuvre FROM oeuvres WHERE titre = ? AND premiere_parution = ?";
-        PreparedStatement prep_stmt_idRecup = con.prepareStatement(idRecupSql);
-        prep_stmt_idRecup.setString(1, this.titre);
-        prep_stmt_idRecup.setInt(2, this.premiere_parution);
-        ResultSet ids = prep_stmt_idRecup.executeQuery();
-        while (ids.next()) {
-            this.id = ids.getInt("id_oeuvre");
-        }
     }
     public void updateWithId (Connection con) throws SQLException {
         String sql = "select titre, premiere_parution, mot_cle1, mot_cle2, mot_cle3, mot_cle4, mot_cle5 from oeuvres WHERE id_oeuvre = " + this.id;

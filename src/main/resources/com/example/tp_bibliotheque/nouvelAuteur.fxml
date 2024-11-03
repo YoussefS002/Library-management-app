@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.tp_bibliotheque.nouvelAuteurController"
-            prefHeight="400.0" prefWidth="600.0"
-            fx:id="mainContent">
-    <VBox fx:id="vBox" >
+            prefHeight="650.0" prefWidth="1200.0"
+            fx:id="mainContent" style="-fx-background-color: #E8F5E9;">
+    <VBox alignment="CENTER" spacing="15" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
         <children>
-            <TextField fx:id="nomTF" promptText="nom" />
-            <TextField fx:id="prenomTF" promptText="prénom" />
-            <DatePicker fx:id="naissanceDF" promptText="Date de naissance" />
-            <Button mnemonicParsing="false" onAction="#ajouterAuteur" text="Ajouter" />
-            <Button mnemonicParsing="false" onAction="#retour" text="Annuler" />
+            <Text text="Ajouter un auteur" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <TextField fx:id="nomTF" promptText="Nom" style="-fx-background-color: #FFFFFF;" />
+            <TextField fx:id="prenomTF" promptText="Prénom" style="-fx-background-color: #FFFFFF;" />
+            <DatePicker fx:id="naissanceDF" promptText="Date de naissance" style="-fx-background-color: #FFFFFF;" />
+            <Button mnemonicParsing="false" onAction="#ajouterAuteur" text="Ajouter" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+            <Button mnemonicParsing="false" onAction="#retour" text="Annuler" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-weight: bold;" />
         </children>
     </VBox>
 </AnchorPane>

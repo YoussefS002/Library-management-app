@@ -8,16 +8,19 @@ public class Auteur {
     String nom;
     String prenom;
     LocalDate dateNaissance;
-    public int recupererId (Connection con) throws SQLException {
-        String idRecupSql = "SELECT id_auteur FROM auteurs WHERE nom = ? AND prenom = ? AND date_naissance = ?";
-        PreparedStatement prep_stmt_idRecup = con.prepareStatement(idRecupSql);
-        prep_stmt_idRecup.setString(1, this.nom);
-        prep_stmt_idRecup.setString(2, this.prenom);
-        prep_stmt_idRecup.setDate(3, Date.valueOf(this.dateNaissance));
-        ResultSet ids = prep_stmt_idRecup.executeQuery();
-        while (ids.next()) {
-            this.id = ids.getInt("id_auteur");
+
+    public void updateWithId(Connection con) throws SQLException {
+        String sql = "select nom, prenom, date_naissance from auteurs WHERE id_auteur = " + this.id;
+        Statement statement1 = con.createStatement();
+        ResultSet resultSet1 = statement1.executeQuery(sql);
+        while (resultSet1.next()) {
+            this.nom = resultSet1.getString("nom");
+            this.prenom = resultSet1.getString("prenom");
+            this.dateNaissance = resultSet1.getDate("date_naissance").toLocalDate();
         }
-        return this.id;
+    }
+    @Override
+    public String toString() {
+        return id + " - " + nom + " " + prenom;
     }
 }

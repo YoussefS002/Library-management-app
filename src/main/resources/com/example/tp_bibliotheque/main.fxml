@@ -3,113 +3,120 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="mainContent" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.mainController">
-   <TabPane tabClosingPolicy="UNAVAILABLE" fx:id="tabPane" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-       <tabs>
-           <Tab text="oeuvres">
-               <content>
-                   <AnchorPane>
-                       <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
-                           <children>
-                               <TableView fx:id="tableView" prefHeight="400.0">
-                                   <columns>
-                                       <TableColumn fx:id="titreColumn" prefWidth="190" text="Titre" />
-                                       <TableColumn fx:id="premiereParutionColumn" prefWidth="150" text="Première parution" />
-                                       <TableColumn fx:id="motsClesColumn" prefWidth="266" text="Mots clés" />
-                                       <TableColumn fx:id="auteursColumn" prefWidth="170" text="Auteurs" />
-                                   </columns>
-                               </TableView>
-                               <HBox alignment="CENTER" spacing="5">
-                                   <Button mnemonicParsing="false" onAction="#goToNouvelleOeuvre" text="Nouvelle oeuvre" fx:id="nouvelleOeuvreBtn"/>
-                                   <Button mnemonicParsing="false" onAction="#goToNouvelleEdition" text="Nouvelle édition" fx:id="nouvelleEditionBtn"/>
-                                   <Button mnemonicParsing="false" onAction="#goToNouvelAuteur" text="Nouvel auteur" fx:id="nouvelAuteurBtn"/>
-                                   <Button mnemonicParsing="false" onAction="#goToNouveauxExemplaires" text="Ajout d'exemplaires" fx:id="nouveauxExemplairesBtn" />
-                               </HBox>
-                           </children>
-                       </VBox>
-                   </AnchorPane>
-               </content>
-           </Tab>
-           <Tab text="usagers" fx:id="usagersTab">
-               <content>
-                   <AnchorPane>
-                       <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
-                           <children>
-                               <TableView fx:id="tableViewU" prefHeight="400.0">
-                                   <columns>
-                                       <TableColumn fx:id="idColumn" prefWidth="190" text="Identifiant" />
-                                       <TableColumn fx:id="nomColumn" prefWidth="146" text="Nom" />
-                                       <TableColumn fx:id="prenomColumn" prefWidth="146" text="Prénom" />
-                                       <TableColumn fx:id="emailColumn" prefWidth="170" text="Email" />
-                                       <TableColumn fx:id="categorieColumn" prefWidth="170" text="Catégorie" />
-                                   </columns>
-                               </TableView>
-                               <HBox>
-                                   <Button fx:id="adminBtn" onAction="#rendreAdmin" text="Rendre admin"/>
-                                   <Button fx:id="gestionnaireBtn" onAction="#rendreGestionnaire" text="Rendre gestionnaire"/>
-                                   <Button fx:id="emprunteurBtn" onAction="#rendreEmprunteur" text="Rendre emprunteur"/>
-                                   <Button fx:id="listeRougeBtn" onAction="#placerEnListeRouge" text="Placer en liste rouge"/>
-                               </HBox>
-                               <Button fx:id="gererCategoriesBtn" onAction="#gererCategories" text="Gérer les catégories"/>
-                           </children>
-                       </VBox>
-                   </AnchorPane>
-               </content>
-           </Tab>
-           <Tab fx:id="empruntsTab" text="Emprunts">
-               <content>
-                   <AnchorPane>
-                       <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
-                           <children>
-                               <TableView fx:id="tableViewE" prefHeight="400.0">
-                                   <columns>
-                                       <TableColumn fx:id="idColumnE" prefWidth="190" text="Identifiant" />
-                                       <TableColumn fx:id="usagerColumn" prefWidth="146" text="Usager" />
-                                       <TableColumn fx:id="oeuvreColumn" prefWidth="146" text="Oeuvre" />
-                                       <TableColumn fx:id="editionColumn" prefWidth="170" text="ISBN" />
-                                       <TableColumn fx:id="numeroColumn" prefWidth="170" text="Numéro" />
-                                       <TableColumn fx:id="dateEmpruntColumn" prefWidth="170" text="Date d'emprunt" />
-                                       <TableColumn fx:id="deadlineColumn" prefWidth="170" text="Deadline" />
-                                       <TableColumn fx:id="dateRetourColumn" prefWidth="170" text="Date de retour" />
-                                   </columns>
-                               </TableView>
-                                <Button fx:id="retourButton" onAction="#effectuerRetour" text="Retourner ce livre"/>
-                           </children>
-                       </VBox>
-                   </AnchorPane>
-               </content>
-           </Tab>
-           <Tab text="Disponibilités">
-               <content>
-                   <AnchorPane>
-                       <VBox alignment="CENTER" spacing="5" AnchorPane.leftAnchor="3" AnchorPane.rightAnchor="3" AnchorPane.topAnchor="3">
-                           <children>
-                               <HBox>
-                                   <TableView fx:id="tableViewD" prefHeight="400.0">
-                                       <columns>
-                                           <TableColumn fx:id="isbnColumnD" prefWidth="50" text="ISBN" />
-                                           <TableColumn fx:id="oeuvreColumnD" prefWidth="50" text="Oeuvre" />
-                                           <TableColumn fx:id="editeurColumnD" prefWidth="50" text="Editeur" />
-                                           <TableColumn fx:id="nbDisposColumnD" prefWidth="50" text="Nombre disponible" />
+<AnchorPane fx:id="mainContent" prefWidth="1200" prefHeight="650" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.mainController">
+    <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="5" AnchorPane.rightAnchor="5" AnchorPane.topAnchor="5" AnchorPane.bottomAnchor="45">
+        <tabs>
+            <Tab fx:id="oeuvresTab" text="Oeuvres" >
+                <content>
+                    <AnchorPane>
+                        <VBox alignment="CENTER" spacing="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
+                            <children>
+                                <TableView fx:id="tableView" prefHeight="400.0" prefWidth="1180.0" style="-fx-background-color: #FFFFFF; -fx-selection-bar: #A5D6A7;">
+                                    <columns>
+                                        <TableColumn fx:id="titreColumn" prefWidth="290" text="Titre" />
+                                        <TableColumn fx:id="premiereParutionColumn" prefWidth="200" text="Première parution" />
+                                        <TableColumn fx:id="motsClesColumn" prefWidth="400" text="Mots clés" />
+                                        <TableColumn fx:id="auteursColumn" prefWidth="270" text="Auteurs" />
+                                    </columns>
+                                </TableView>
+                                <HBox alignment="CENTER" spacing="10">
+                                    <Button fx:id="nouvelleOeuvreBtn" onAction="#goToNouvelleOeuvre" text="Nouvelle oeuvre" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                    <Button fx:id="nouvelleEditionBtn" onAction="#goToNouvelleEdition" text="Nouvelle édition" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                    <Button fx:id="nouvelAuteurBtn" onAction="#goToNouvelAuteur" text="Nouvel auteur" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                    <Button fx:id="nouveauxExemplairesBtn" onAction="#goToNouveauxExemplaires" text="Ajout d'exemplaires" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </AnchorPane>
+                </content>
+            </Tab>
+            <Tab fx:id="usagersTab" text="Usagers">
+                <content>
+                    <AnchorPane>
+                        <VBox alignment="CENTER" spacing="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
+                            <children>
+                                <TableView fx:id="tableViewU" prefHeight="400.0" prefWidth="1180.0" style="-fx-background-color: #FFFFFF; -fx-selection-bar: #A5D6A7;">
+                                    <columns>
+                                        <TableColumn fx:id="idColumn" prefWidth="180" text="Identifiant" />
+                                        <TableColumn fx:id="nomColumn" prefWidth="250" text="Nom" />
+                                        <TableColumn fx:id="prenomColumn" prefWidth="250" text="Prénom" />
+                                        <TableColumn fx:id="emailColumn" prefWidth="250" text="Email" />
+                                        <TableColumn fx:id="categorieColumn" prefWidth="230" text="Catégorie" />
+                                    </columns>
+                                </TableView>
+                                <HBox alignment="CENTER" spacing="10">
+                                    <Button fx:id="adminBtn" onAction="#rendreAdmin" text="Rendre admin" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                    <Button fx:id="gestionnaireBtn" onAction="#rendreGestionnaire" text="Rendre gestionnaire" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                    <Button fx:id="emprunteurBtn" onAction="#rendreEmprunteur" text="Rendre emprunteur" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                    <Button fx:id="listeRougeBtn" onAction="#placerEnListeRouge" text="Placer en liste rouge" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                </HBox>
+                                <Button fx:id="gererCategoriesBtn" onAction="#gererCategories" text="Gérer les catégories" style="-fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                            </children>
+                        </VBox>
+                    </AnchorPane>
+                </content>
+            </Tab>
+            <Tab fx:id="empruntsTab" text="Emprunts">
+                <content>
+                    <AnchorPane>
+                        <VBox alignment="CENTER" spacing="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
+                            <children>
+                                <TableView fx:id="tableViewE" prefHeight="400.0" prefWidth="1180.0" style="-fx-background-color: #FFFFFF; -fx-selection-bar: #A5D6A7;">
+                                    <columns>
+                                        <TableColumn fx:id="idColumnE" prefWidth="130" text="Identifiant" />
+                                        <TableColumn fx:id="usagerColumn" prefWidth="150" text="Usager" />
+                                        <TableColumn fx:id="oeuvreColumn" prefWidth="170" text="Oeuvre" />
+                                        <TableColumn fx:id="editionColumn" prefWidth="150" text="ISBN" />
+                                        <TableColumn fx:id="numeroColumn" prefWidth="110" text="Numéro" />
+                                        <TableColumn fx:id="dateEmpruntColumn" prefWidth="150" text="Date d'emprunt" />
+                                        <TableColumn fx:id="deadlineColumn" prefWidth="150" text="Deadline" />
+                                        <TableColumn fx:id="dateRetourColumn" prefWidth="150" text="Date de retour" />
+                                    </columns>
+                                </TableView>
+                                <Button fx:id="retourButton" onAction="#effectuerRetour" text="Retourner ce livre" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                            </children>
+                        </VBox>
+                    </AnchorPane>
+                </content>
+            </Tab>
+            <Tab fx:id="disponibilitesTab" text="Disponibilités">
+                <content>
+                    <AnchorPane>
+                        <VBox alignment="CENTER" spacing="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
+                            <children>
+                                <Label text="Rechercher un livre disponible :" />
+                                <TextField fx:id="searchField" promptText="Rechercher par oeuvre" />
+                                <HBox spacing="10">
+                                    <VBox>
+                                        <Label text="Livres disponibles" style="-fx-font-weight: bold;" />
+                                        <TableView fx:id="tableViewD" prefHeight="400.0" prefWidth="585.0" style="-fx-background-color: #FFFFFF; -fx-selection-bar: #A5D6A7;">
+                                            <columns>
+                                                <TableColumn fx:id="isbnColumnD" prefWidth="110" text="ISBN" />
+                                                <TableColumn fx:id="oeuvreColumnD" prefWidth="180" text="Oeuvre" />
+                                                <TableColumn fx:id="editeurColumnD" prefWidth="140" text="Editeur" />
+                                                <TableColumn fx:id="nbDisposColumnD" prefWidth="145" text="Nombre disponible" />
+                                            </columns>
+                                        </TableView>
+                                    </VBox>
+                                    <VBox>
+                                        <Label text="Livres indisponibles" style="-fx-font-weight: bold;" />
+                                        <TableView fx:id="tableViewI" prefHeight="400.0" prefWidth="585.0" style="-fx-background-color: #FFFFFF; -fx-selection-bar: #A5D6A7;">
+                                            <columns>
+                                                <TableColumn fx:id="isbnColumnI" prefWidth="110" text="ISBN" />
+                                                <TableColumn fx:id="oeuvreColumnI" prefWidth="180" text="Oeuvre" />
+                                                <TableColumn fx:id="editeurColumnI" prefWidth="140" text="Editeur" />
+                                            </columns>
+                                        </TableView>
+                                    </VBox>
+                                </HBox>
+                                <Button fx:id="goToNouvelEmprunt" onAction="#goToNouvelEmprunt" text="Effectuer un emprunt" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                            </children>
+                        </VBox>
+                    </AnchorPane>
+                </content>
+            </Tab>
 
-                                       </columns>
-                                   </TableView>
-                                   <TableView fx:id="tableViewI" prefHeight="400.0">
-                                       <columns>
-                                           <TableColumn fx:id="isbnColumnI" prefWidth="50" text="ISBN" />
-                                           <TableColumn fx:id="oeuvreColumnI" prefWidth="50" text="Oeuvre" />
-                                           <TableColumn fx:id="editeurColumnI" prefWidth="50" text="Editeur" />
-
-                                       </columns>
-                                   </TableView>
-                               </HBox>
-                               <Button onAction="#goToNouvelEmprunt" text="Effectuer un emprunt"/>
-                           </children>
-                       </VBox>
-                   </AnchorPane>
-               </content>
-           </Tab>
-       </tabs>
-   </TabPane>
-    <Button onAction="#disconnect" text="Se déconnecter" AnchorPane.bottomAnchor="0"/>
+        </tabs>
+    </TabPane>
+    <Button fx:id="disconnectBtn" onAction="#disconnect" text="Se déconnecter" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" />
 </AnchorPane>

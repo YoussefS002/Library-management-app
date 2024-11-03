@@ -2,23 +2,23 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.tp_bibliotheque.nouvelEmpruntController"
-            prefHeight="400.0" prefWidth="600.0"
-            fx:id="mainContent">
-            <VBox>
-                <children>
-
-                    <ComboBox fx:id="cbOeuvre" promptText="oeuvre" onAction="#afficherIsbns"/>
-                    <ComboBox fx:id="cbIsbn" promptText="édition" onAction="#afficherNumeros"/>
-                    <ComboBox fx:id="cbNumero" promptText="numéro"/>
-                    <Label fx:id="dateEmpruntLBL"/>
-                    <Label fx:id="deadlineRetourLBL"/>
-                    <Button text="Valider" onAction="#ajouterEmprunt"/>
-                    <Button mnemonicParsing="false" onAction="#retour" text="Annuler" />
-
-                </children>
-            </VBox>
+            prefHeight="650.0" prefWidth="1200.0"
+            fx:id="mainContent" style="-fx-background-color: #E8F5E9;">
+    <VBox alignment="CENTER" spacing="15" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
+        <children>
+            <Text text="Effectuer un emprunt" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <ComboBox fx:id="cbOeuvre" promptText="Oeuvre" onAction="#afficherIsbns" style="-fx-background-color: #FFFFFF;" />
+            <ComboBox fx:id="cbEdition" promptText="Édition" onAction="#afficherNumeros" style="-fx-background-color: #FFFFFF;" />
+            <ComboBox fx:id="cbNumero" promptText="Numéro" style="-fx-background-color: #FFFFFF;" />
+            <Label fx:id="dateEmpruntLBL" text="Date d'emprunt : " style="-fx-font-weight: bold;" />
+            <Label fx:id="deadlineRetourLBL" text="Deadline de retour : " style="-fx-font-weight: bold;" />
+            <Button text="Valider" onAction="#ajouterEmprunt" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+            <Button mnemonicParsing="false" onAction="#retour" text="Annuler" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-weight: bold;" />
+        </children>
+    </VBox>
 </AnchorPane>

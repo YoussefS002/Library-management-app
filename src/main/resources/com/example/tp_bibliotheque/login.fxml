@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.tp_bibliotheque.loginController"
-            prefHeight="400.0" prefWidth="600.0">
-    <VBox>
-        <TextField fx:id="emailTF" promptText="email"/>
-        <PasswordField fx:id="passwordTF" promptText="mot de passe" />
-        <Button onAction="#login" text="se connecter"/>
-        <Button onAction="#goToNouvelUsager" text="créer un compte"/>
+            prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #E8F5E9;">
+    <VBox alignment="CENTER" spacing="15" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="50">
+        <Text text="Connexion" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        <TextField fx:id="emailTF" promptText="Email" style="-fx-background-color: #FFFFFF;" />
+        <PasswordField fx:id="passwordTF" promptText="Mot de passe" style="-fx-background-color: #FFFFFF;" />
+        <Button onAction="#login" text="Se connecter" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+        <Button onAction="#goToNouvelUsager" text="Créer un compte" style="-fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-weight: bold;" />
     </VBox>
 </AnchorPane>

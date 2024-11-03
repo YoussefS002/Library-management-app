@@ -2,18 +2,19 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainContent" prefHeight="252.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.nouvelUsagerController">
+<AnchorPane fx:id="mainContent" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #E8F5E9;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.nouvelUsagerController">
     <children>
-        <VBox fx:id="vBox" layoutY="24.0" prefHeight="200.0" prefWidth="222.0">
+        <VBox fx:id="vBox" alignment="CENTER" spacing="15" layoutY="50.0" prefHeight="300.0" prefWidth="360.0" AnchorPane.leftAnchor="120" AnchorPane.rightAnchor="120">
             <children>
-                <TextField fx:id="nomTF" promptText="nom" />
-                <TextField fx:id="prenomTF" promptText="prenom" />
-                <TextField fx:id="emailTF" promptText="email" />
-                <PasswordField fx:id="passwordTF" promptText="mot de passe"/>
-                <PasswordField fx:id="confirmationTF" promptText="confirmez votre mot de passe"/>
-                <Button onAction="#ajouterUsager" text="Ajouter" />
-                <Button mnemonicParsing="false" onAction="#retour" text="Annuler" />
+                <Text text="Créer un compte" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+                <TextField fx:id="nomTF" promptText="Nom" style="-fx-background-color: #FFFFFF;" />
+                <TextField fx:id="prenomTF" promptText="Prénom" style="-fx-background-color: #FFFFFF;" />
+                <TextField fx:id="emailTF" promptText="Email" style="-fx-background-color: #FFFFFF;" />
+                <PasswordField fx:id="passwordTF" promptText="Mot de passe" style="-fx-background-color: #FFFFFF;" />
+                <PasswordField fx:id="confirmationTF" promptText="Confirmez votre mot de passe" style="-fx-background-color: #FFFFFF;" />
+                <Button onAction="#ajouterUsager" text="Valider" style="-fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-weight: bold;" />
             </children>
         </VBox>
     </children>

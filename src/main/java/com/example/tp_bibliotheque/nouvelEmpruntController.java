@@ -9,7 +9,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -21,10 +20,10 @@ public class nouvelEmpruntController {
     Usager usagerSelectionne;
     Oeuvre oeuvreSelectionnee;
     @FXML
-    private ComboBox<String> cbOeuvre;
-    long isbnSelectionne;
+    private ComboBox<Oeuvre> cbOeuvre;
+    Edition editionSelectionnee;
     @FXML
-    private ComboBox<Long> cbIsbn;
+    private ComboBox<Edition> cbEdition;
     int numeroSelectionne;
     @FXML
     private ComboBox<Integer> cbNumero;
@@ -41,15 +40,17 @@ public class nouvelEmpruntController {
     @FXML
     private void initialize() {
         //oeuvres
-        ObservableList<String> oeuvres = FXCollections.observableArrayList();
-        String oeuvres_query = "SELECT titre,premiere_parution FROM oeuvres";
+        ObservableList<Oeuvre> oeuvres = FXCollections.observableArrayList();
+        String oeuvres_query = "SELECT id_oeuvre FROM oeuvres";
         try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
              Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery(oeuvres_query)) {
              while (resultSet.next()) {
-                String titre = resultSet.getString("titre");
-                int premiere_parution = resultSet.getInt("premiere_parution");
-                oeuvres.add(titre + " - " + premiere_parution);
+                int id_oeuvre = resultSet.getInt("id_oeuvre");
+                Oeuvre oeuvre = new Oeuvre();
+                oeuvre.id=id_oeuvre;
+                oeuvre.updateWithId(con);
+                oeuvres.add(oeuvre);
              }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -70,21 +71,19 @@ public class nouvelEmpruntController {
 
     @FXML
     private void afficherIsbns() throws SQLException {
-        ObservableList<Long> isbns = FXCollections.observableArrayList();
+        ObservableList<Edition> editions = FXCollections.observableArrayList();
         String isbn_query = "SELECT isbn FROM editions WHERE id_oeuvre = ?";
         Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
         PreparedStatement prep_statement = con.prepareStatement(isbn_query);
-        String oeuvreAnnee = cbOeuvre.getSelectionModel().getSelectedItem();
-        String[] L = oeuvreAnnee.split("-");
-        oeuvreSelectionnee = new Oeuvre(L[0].strip(), Integer.parseInt(L[1].strip()), "?");
-        oeuvreSelectionnee.updateId(con);
+        oeuvreSelectionnee=cbOeuvre.getSelectionModel().getSelectedItem();
         prep_statement.setInt(1, oeuvreSelectionnee.id);
         ResultSet resultSet = prep_statement.executeQuery();
         while (resultSet.next()) {
             Long isbn = resultSet.getLong("isbn");
-            isbns.add(isbn);
+            Edition edition = new Edition(isbn);
+            editions.add(edition);
         }
-        cbIsbn.setItems(isbns);
+        cbEdition.setItems(editions);
     }
 
     @FXML
@@ -94,8 +93,8 @@ public class nouvelEmpruntController {
         Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
         PreparedStatement prep_statement = con.prepareStatement(numeros_query);
 
-        isbnSelectionne = cbIsbn.getSelectionModel().getSelectedItem();
-        prep_statement.setLong(1, isbnSelectionne);
+        editionSelectionnee = cbEdition.getSelectionModel().getSelectedItem();
+        prep_statement.setLong(1, editionSelectionnee.isbn);
         ResultSet resultSet = prep_statement.executeQuery();
         while (resultSet.next()) {
             int numero = resultSet.getInt("numero");
@@ -113,7 +112,7 @@ public class nouvelEmpruntController {
         Emprunt nouvelEmprunt = new Emprunt();
         nouvelEmprunt.usager=usagerSelectionne;
         nouvelEmprunt.oeuvre=oeuvreSelectionnee;
-        nouvelEmprunt.edition=new Edition(isbnSelectionne);
+        nouvelEmprunt.edition= editionSelectionnee;
         nouvelEmprunt.numero=numeroSelectionne;
         nouvelEmprunt.dateEmprunt=dateEmprunt;
         nouvelEmprunt.deadline=deadlineRetour;

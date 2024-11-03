@@ -18,7 +18,7 @@ import java.util.List;
 
 public class nouvelleEditionController {
     @FXML
-    private ComboBox<String> cbOeuvre;
+    private ComboBox<Oeuvre> cbOeuvre;
     @FXML
     private TextField tfIsbn;
     @FXML
@@ -30,15 +30,17 @@ public class nouvelleEditionController {
 
     @FXML
     private void initialize() {
-        ObservableList<String> oeuvres = FXCollections.observableArrayList();
-        String oeuvres_query = "SELECT titre,premiere_parution FROM oeuvres";
+        ObservableList<Oeuvre> oeuvres = FXCollections.observableArrayList();
+        String oeuvres_query = "SELECT id_oeuvre FROM oeuvres";
         try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque","root","0000");
              Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery(oeuvres_query)) {
             while (resultSet.next()) {
-                String titre = resultSet.getString("titre");
-                int premiere_parution = resultSet.getInt("premiere_parution");
-                oeuvres.add(titre + " - " + premiere_parution);
+                int id_oeuvre = resultSet.getInt("id_oeuvre");
+                Oeuvre oeuvre = new Oeuvre();
+                oeuvre.id=id_oeuvre;
+                oeuvre.updateWithId(con);
+                oeuvres.add(oeuvre);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -56,14 +58,7 @@ public class nouvelleEditionController {
         nouvelleEdition.nbExemplaires = Integer.parseInt(tfNbExemplaires.getText());
         nouvelleEdition.Editeur = tfEditeur.getText();
         nouvelleEdition.anneeEdition = Integer.parseInt(tfAnneeEdition.getText());
-
-
-        String oeuvreAnnee = cbOeuvre.getSelectionModel().getSelectedItem();
-        String[] L = oeuvreAnnee.split("-");
-        Oeuvre oeuvre = new Oeuvre(L[0].strip(), Integer.parseInt(L[1].strip()), "?");
-        oeuvre.updateId(con);
-
-        nouvelleEdition.oeuvre = oeuvre;
+        nouvelleEdition.oeuvre = cbOeuvre.getSelectionModel().getSelectedItem();
         nouvelleEdition.ajouter(con);
 
 

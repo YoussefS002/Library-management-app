@@ -20,7 +20,7 @@ public class Edition {
         while (rs.next()) {
             Editeur = rs.getString("editeur");
             anneeEdition = rs.getInt("annee_edition");
-            oeuvre = new Oeuvre("?", 0, "?");
+            oeuvre = new Oeuvre();
             oeuvre.id = rs.getInt("id_oeuvre");
             oeuvre.updateWithId(con);
             nbExemplaires = rs.getInt("nb_exemplaires");

@@ -2,20 +2,27 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane fx:id="mainContent" prefHeight="200.0" prefWidth="233.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tp_bibliotheque.nouvelleOeuvreController">
-   <VBox fx:id="vBox" >
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.tp_bibliotheque.nouvelleOeuvreController"
+            prefHeight="650.0" prefWidth="1200.0" fx:id="mainContent" style="-fx-background-color: #E8F5E9;">
+   <VBox fx:id="vBox" alignment="CENTER" spacing="15" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
       <children>
-         <TextField fx:id="titreTF" promptText="titre" />
-         <TextField fx:id="premiere_parutionTF" promptText="première parution" />
-         <TextField fx:id="mot_cle1TF" promptText="mot clé 1" />
-         <TextField fx:id="mot_cle2TF" promptText="mot clé 2" />
-         <TextField fx:id="mot_cle3TF" promptText="mot clé 3" />
-         <TextField fx:id="mot_cle4TF" promptText="mot clé 4" />
-         <TextField fx:id="mot_cle5TF" promptText="mot clé 5" />
-         <Label text="Auteurs :" />
-         <Button mnemonicParsing="false" onAction="#ajouterOeuvre" text="Ajouter" />
-         <Button mnemonicParsing="false" onAction="#retour" text="Annuler" />
+         <Text text="Ajouter une nouvelle oeuvre" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+         <TextField fx:id="titreTF" promptText="Titre" style="-fx-background-color: #FFFFFF;" />
+         <TextField fx:id="premiere_parutionTF" promptText="Première parution" style="-fx-background-color: #FFFFFF;" />
+         <TextField fx:id="mot_cle1TF" promptText="Mot clé 1" style="-fx-background-color: #FFFFFF;" />
+         <TextField fx:id="mot_cle2TF" promptText="Mot clé 2" style="-fx-background-color: #FFFFFF;" />
+         <TextField fx:id="mot_cle3TF" promptText="Mot clé 3" style="-fx-background-color: #FFFFFF;" />
+         <TextField fx:id="mot_cle4TF" promptText="Mot clé 4" style="-fx-background-color: #FFFFFF;" />
+         <TextField fx:id="mot_cle5TF" promptText="Mot clé 5" style="-fx-background-color: #FFFFFF;" />
+         <HBox fx:id="hBox" spacing="5">
+            <Label text="Auteurs :" style="-fx-font-weight: bold;" />
+         </HBox>
+         <Button mnemonicParsing="false" onAction="#ajouterOeuvre" text="Ajouter" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+         <Button mnemonicParsing="false" onAction="#retour" text="Annuler" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-weight: bold;" />
       </children>
    </VBox>
-
 </AnchorPane>

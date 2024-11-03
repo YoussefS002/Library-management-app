@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.tp_bibliotheque.categoriesController"
-            prefHeight="400.0" prefWidth="600.0"
-            fx:id="mainContent">
-    <VBox>
+            prefHeight="650.0" prefWidth="1200.0" fx:id="mainContent" style="-fx-background-color: #E8F5E9;">
+    <VBox fx:id="vBox" alignment="CENTER" spacing="15" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
         <children>
-            <ComboBox fx:id="cbCategories" promptText="Catégorie" />
-            <TextField fx:id="empruntsMaxTF" promptText="Nombre maximal d'emprunts"/>
-            <TextField fx:id="dureeMaxTF" promptText="Durée maximale d'un emprunt"/>
-            <Button text="Valider" onAction="#majCategorie"/>
-            <Button mnemonicParsing="false" onAction="#retour" text="Annuler" />
-
+            <Text text="Gestion des catégories" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="800.0">
+                <columns>
+                    <TableColumn fx:id="categorieColumn" text="Catégorie" prefWidth="240" />
+                    <TableColumn fx:id="dureeMaxColumn" text="Durée maximale" prefWidth="240" />
+                    <TableColumn fx:id="empruntsMaxColumn" text="Emprunt maximal" prefWidth="240" />
+                </columns>
+            </TableView>
+            <Label text="Sélectionnez une catégorie pour la modifier" style="-fx-font-size: 14px;" />
+            <ComboBox fx:id="cbCategories" promptText="Catégorie" prefWidth="300.0" style="-fx-background-color: #FFFFFF;" />
+            <TextField fx:id="empruntsMaxTF" promptText="Nombre maximal d'emprunts" prefWidth="300.0" style="-fx-background-color: #FFFFFF;" />
+            <TextField fx:id="dureeMaxTF" promptText="Durée maximale d'un emprunt" prefWidth="300.0" style="-fx-background-color: #FFFFFF;" />
+            <HBox fx:id="hBox" spacing="5" alignment="CENTER">
+                <Button text="Valider" onAction="#majCategorie" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                <Button mnemonicParsing="false" onAction="#retour" text="Annuler" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-weight: bold;" />
+            </HBox>
         </children>
     </VBox>
 </AnchorPane>

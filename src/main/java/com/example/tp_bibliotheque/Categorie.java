@@ -23,4 +23,13 @@ public class Categorie {
     public String toString() {
         return nom;
     }
+    public int getDuree_max() {
+        return duree_max;
+    }
+    public int getEmprunts_max() {
+        return emprunts_max;
+    }
+    public String getNom() {
+        return nom;
+    }
 }
