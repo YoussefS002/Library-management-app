@@ -109,7 +109,7 @@
                                         </TableView>
                                     </VBox>
                                 </HBox>
-                                <Button fx:id="goToNouvelEmprunt" onAction="#goToNouvelEmprunt" text="Effectuer un emprunt" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                <Button fx:id="nouvelEmpruntBtn" onAction="#goToNouvelEmprunt" text="Effectuer un emprunt" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold;" />
                             </children>
                         </VBox>
                     </AnchorPane>
@@ -118,5 +118,8 @@
 
         </tabs>
     </TabPane>
-    <Button fx:id="disconnectBtn" onAction="#disconnect" text="Se déconnecter" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" />
+    <HBox alignment="CENTER_RIGHT" spacing="10" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10">
+        <Label fx:id="currentUserCategorie" text="Catégorie d'utilisateur" style="-fx-font-weight: bold; -fx-text-fill: #000000;" />
+        <Button onAction="#disconnect" text="Se déconnecter" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" />
+    </HBox>
 </AnchorPane>

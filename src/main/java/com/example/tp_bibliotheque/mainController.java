@@ -20,6 +20,10 @@ import java.util.Objects;
 
 public class mainController {
     @FXML
+    private Button nouvelEmpruntBtn;
+    @FXML
+    private Label currentUserCategorie;
+    @FXML
     private Button nouvelleOeuvreBtn;
     @FXML
     private Button nouvelleEditionBtn;
@@ -227,6 +231,13 @@ public class mainController {
     @FXML
     TextField searchField;
     public void initData() {
+        //current user
+        currentUserCategorie.setText(loginController.currentUser.toString() + " - " + loginController.currentUser.categorie.toString());
+
+        //liste rouge
+        if (Objects.equals(loginController.currentUser.categorie.toString(), "liste rouge") )
+            nouvelEmpruntBtn.setVisible(false);
+
         //oeuvres
 
         titreColumn.setCellValueFactory(new PropertyValueFactory<>("titre"));
